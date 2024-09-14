@@ -1,4 +1,4 @@
-import Sign from "../../components/user/sign";
+import Sign from "../../../components/user/sign";
 export default function Home() {
   return (
     <>
