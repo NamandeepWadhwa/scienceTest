@@ -1,5 +1,5 @@
 'use client';
-
+import { signIn } from "next-auth/react";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,11 +14,14 @@ export default function Sign(){
     }
     console.log(email, password);
   } 
+  console.log(process.env.NEXT_PUBLIC_CLIENT_ID);
   return (
     <>
       <div className="flex flex-col items-center justify-center h-full">
         <div className="text-2xl font-bold mb-4">Sign In</div>
-        <button>
+        <button onClick={()=>{ console.log("I am here");
+          signIn("google",{redirect:false})
+        }}>
           <div className="flex items-center hover:text-blue-600">
             <Image
               src="/images/googleLogo.png"
