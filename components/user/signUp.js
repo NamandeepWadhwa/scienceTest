@@ -1,11 +1,16 @@
 'use client';
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { userEmail,userPassword } from "../../lib/user/userState";
+import { useAtom } from "jotai";
+import sendOtp from'../../lib/otp/sendOtp'
 export default function SignUp() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const router=useRouter();
+  const [email,setEmail]=useAtom(userEmail)
+ const [password,setPassword]=useAtom(userPassword);
   const [password2, setPassword2] = useState("");
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if(email === "" || password === "" || password2 === ""){
       alert("Please fill in the form");
@@ -15,7 +20,13 @@ export default function SignUp() {
       alert("Passwords do not match");
       return;
     }
-    console.log(email, password);
+    await sendOtp(email);
+
+  router.push(`/otp`)
+  
+
+
+    
   }
   return <>
   <div className="flex flex-col justify-center items-center h-screen">
