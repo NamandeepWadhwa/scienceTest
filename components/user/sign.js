@@ -4,17 +4,25 @@ import Link from "next/link";
 import Image from "next/image";
 import getUser from "../../lib/user/getUser";
 import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Sign() {
+  const router=useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { data: session } = useSession(); // Move useSession here
 
   useEffect(() => {
-    if (session?.user?.token) {
-      localStorage.setItem("token", session.user.token);
-      alert("You are now logged in");
-    }
+     if (
+       session?.user?.token  &&
+       (session.user.token !== localStorage.getItem("token"))
+     ) {
+      
+       localStorage.setItem("token", session.user.token);
+       console.log(session.user.token);
+       alert("You are now logged in");
+       router.push("/profile");
+     }
   }, [session]);
 
   const handleSubmit = async (e) => {

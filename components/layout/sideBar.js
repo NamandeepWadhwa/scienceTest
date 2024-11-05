@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useState } from "react";
 export default function SideBar() {
+
   const [open, setOpen] = useState(false);
   return<>
   <div className="flex flex-col absolute right-0 w-1/2">
