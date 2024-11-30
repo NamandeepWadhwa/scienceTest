@@ -13,7 +13,7 @@ export default function ProfilePage() {
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
-        alert("Please log in first.");
+       
         router.push("/sign"); // Correct path to sign page
         return;
       }

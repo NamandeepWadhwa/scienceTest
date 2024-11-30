@@ -1,17 +1,23 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react"; // Import signOut from next-auth
+import { useEffect } from "react";
 
 export default function SideBarMd() {
+  let token=localStorage.getItem('token')
+  useEffect(()=>{
+  token=localStorage.getItem('token');
+  })
   const router = useRouter();
 
   // Update handleSignOut to use signOut from NextAuth
   const handleSignOut = async () => {
     localStorage.removeItem("token");
+  
     await signOut({ callbackUrl: "/signin" }); // Redirect after sign out
   };
 
-  const token = localStorage.getItem("token");
+
 
   return (
     <>

@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 
 export default function Information( {data }) {
-  console.log(data.data)
+  console.log(data)
   useEffect(() => {
     const elements = document.querySelectorAll(".animate-on-scroll");
 
@@ -32,7 +32,7 @@ export default function Information( {data }) {
       <div className="min-w-full"></div>
       <div className="relative min-h-screen w-full">
         <img
-          src={data.data.hdurl}
+          src={data.hdurl}
           alt="NASA Image of the Day"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -44,11 +44,11 @@ export default function Information( {data }) {
         <div className="flex flex-col justify-center items-center text-2xl font-bold min-w-full">
           <div>Astronomical image of the day</div>
           <div className="mt-2 mb-6">
-            Copy right by :{`${data.data.copyright ?? "None"}`}
+            Copy right by :{`${data.copyright ?? "None"}`}
           </div>
         </div>
         <h2 className="text-2xl font-bold text-center px-4">
-          {data.data.explanation}
+          {data.explanation}
         </h2>
       </div>
     </>

@@ -7,6 +7,7 @@ import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function Sign() {
+
   const router=useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,11 +20,9 @@ export default function Sign() {
      ) {
       
        localStorage.setItem("token", session.user.token);
-       console.log(session.user.token);
-       alert("You are now logged in");
        router.push("/profile");
      }
-  }, [session]);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,7 +44,7 @@ export default function Sign() {
       <div className="text-2xl font-bold mb-4">Sign In</div>
 
       {/* Sign in with Google Button */}
-      <button onClick={() => signIn("google", { callbackUrl: "/" })}>
+      <button onClick={() => signIn("google", { callbackUrl: "/profile" })}>
         <div className="flex items-center hover:text-blue-600">
           <Image
             src="/images/googleLogo.png"
