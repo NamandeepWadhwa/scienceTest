@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 
 export default function Information( {data }) {
-  console.log(data)
   useEffect(() => {
     const elements = document.querySelectorAll(".animate-on-scroll");
 
