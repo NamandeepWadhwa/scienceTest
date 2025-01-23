@@ -2,7 +2,7 @@
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
-const PUBLIC_PATHS = ["/login", "/", "/_error", "/register"];
+const PUBLIC_PATHS = ["/login", "/", "/_error", "/register","/charts"];
 
 export default function RouteGuard({ children }) {
   const [isAuthenticated, setAuthenticated] = useState(false);

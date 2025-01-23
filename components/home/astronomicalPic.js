@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
+import Image from "next/image";
 
 export default function Information( {data }) {
+  console.log(data.url);
   useEffect(() => {
     const elements = document.querySelectorAll(".animate-on-scroll");
 
@@ -30,10 +32,13 @@ export default function Information( {data }) {
     <>
       <div className="min-w-full"></div>
       <div className="relative min-h-screen w-full">
-        <img
+        <Image
           src={data.hdurl}
           alt="NASA Image of the Day"
           className="absolute inset-0 w-full h-full object-cover"
+          width={100}
+          height={100}
+          priority
         />
       </div>
 
