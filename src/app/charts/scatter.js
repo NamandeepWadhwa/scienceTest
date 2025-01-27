@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useEffect, useState } from "react";
 import Chart from "chart.js/auto";
-import asteriodData from "../../../lib/nasa/asteriodData";
+import asteriodData from "../../../lib/nasa/sppedData";
 
 export default function Page() {
   const [error, setError] = useState("");
@@ -12,8 +12,8 @@ export default function Page() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const pieChartData = await asteriodData();
-        setChartData(pieChartData) // Store data in ref to prevent re-renders
+        const speedData = await asteriodData();
+        setChartData(speedData) // Store data in ref to prevent re-renders
 
         if (!chartX.current) return; // Ensure the canvas exists
 
@@ -21,17 +21,24 @@ export default function Page() {
         if (chartInstance.current) {
           chartInstance.current.destroy();
         }
+        const canvas = chartX.current;
+        const container = canvas.parentElement;
+
+        // Set the canvas width and height to match the container's size
+        canvas.width = container.offsetWidth;
+        canvas.height = container.offsetHeight;
+
+        const ctx = canvas.getContext("2d");
 
         // Create a new chart
-        chartInstance.current = new Chart(chartX.current, {
-          type: "pie",
+        chartInstance.current = new Chart(ctx, {
+          type: "scatter",
           data: {
-            labels: ["Hazardous", "Non-Hazardous"],
             datasets: [
               {
-                data: pieChartData, // [hazardous, non-hazardous]
-                backgroundColor: ["#FF6384", "#36A2EB"],
-                hoverBackgroundColor: ["#FF6384", "#36A2EB"],
+                label: "Estimated Size (meter) vs Max Speed (m/s)",
+                data: speedData, // [hazardous, non-hazardous]
+                backgroundColor: "rgb(255, 99, 132)",
               },
             ],
           },
@@ -62,28 +69,10 @@ export default function Page() {
 
   return (
     <>
-      <div className="h-full  flex flex-col justify-around">
+      <div className="w-3/5 h-full">
         {error && <p className="text-red-500">{error}</p>}
-        <canvas ref={chartX}></canvas>
-        {chartDataRef && (
-          <div className="flex flex-col">
-            <div className="mt-4">
-              <p>
-                Asteroid categorization based on their closest approach to Earth
-                in the last 7 days
-              </p>
-            </div>
-            <div className="mt-4">
-              <h2 className="text-lg font-bold">Asteroid Data:</h2>
-              <p>Total Asteroids: {chartDataRef[0] + chartDataRef[1]}</p>
-              <p>Hazardous: {chartDataRef[0]}</p>
-              <p>Non-Hazardous: {chartDataRef[1]}</p>
-            </div>
-          </div>
-        )}
+        <canvas  ref={chartX}></canvas>
       </div>
-
-      {/* Display counts without re-rendering the chart */}
     </>
   );
 }
