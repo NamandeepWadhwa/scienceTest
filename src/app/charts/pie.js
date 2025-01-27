@@ -62,27 +62,28 @@ export default function Page() {
 
   return (
     <>
-      <div className="h-full  flex flex-col justify-around">
-        {error && <p className="text-red-500">{error}</p>}
-        <canvas ref={chartX}></canvas>
-        {chartDataRef && (
-          <div className="flex flex-col">
-            <div className="mt-4">
-              <p>
-                Asteroid categorization based on their closest approach to Earth
-                in the last 7 days
-              </p>
+      <div className="flex-grow ">
+        <div className="flex flex-col m-2">
+          {error && <p className="text-red-500">{error}</p>}
+          <canvas ref={chartX}></canvas>
+          {chartDataRef && (
+            <div className="flex flex-col">
+              <div className="mt-4">
+                <p>
+                  Asteroid categorization based on their closest approach to
+                  Earth in the last 7 days
+                </p>
+              </div>
+              <div className="mt-4">
+                <h2 className="text-lg font-bold">Asteroid Data:</h2>
+                <p>Total Asteroids: {chartDataRef[0] + chartDataRef[1]}</p>
+                <p>Hazardous: {chartDataRef[0]}</p>
+                <p>Non-Hazardous: {chartDataRef[1]}</p>
+              </div>
             </div>
-            <div className="mt-4">
-              <h2 className="text-lg font-bold">Asteroid Data:</h2>
-              <p>Total Asteroids: {chartDataRef[0] + chartDataRef[1]}</p>
-              <p>Hazardous: {chartDataRef[0]}</p>
-              <p>Non-Hazardous: {chartDataRef[1]}</p>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-
       {/* Display counts without re-rendering the chart */}
     </>
   );

@@ -1,18 +1,14 @@
-import Pie from "./pie"
-import Scatter from './scatter'
-export default function Page()
-{
+import Pie from "./pie";
+import Scatter from "./scatter";
+
+export default function Page() {
   return (
-    <>
-      <div className="flex flex-wrap justify-between w-full h-1/2">
-        {/* Scatter Chart */}
+    <div className="flex flex-wrap justify-between">
+      {/* Scatter Chart */}
+      <Scatter />
 
-        <Scatter />
-
-        {/* Pie Chart */}
-
-        <Pie />
-      </div>
-    </>
+      {/* Pie Chart */}
+      <Pie />
+    </div>
   );
 }

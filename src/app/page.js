@@ -2,6 +2,7 @@
 
 import getImage from "../../lib/nasa/astronomicalPic";
 import Information from "../../components/home/astronomicalPic";
+import Charts from "./charts/page";
 
 export default async function Home() {
   try {
@@ -9,9 +10,12 @@ export default async function Home() {
    
  
     return (
-      <main className="flex flex-col items-center justify-center min-h-screen">
-        <Information data={data} />
-      </main>
+      <>
+        <div className="flex flex-col items-center justify-center min-h-screen">
+          <Information data={data} />
+        </div>
+        <Charts />
+      </>
     );
   
   } catch (err) {
