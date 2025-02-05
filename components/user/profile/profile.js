@@ -1,21 +1,26 @@
 import { useState, useEffect } from "react";
 import uploadImage from "../../../lib/uploadImage/uploadImage";
+import getProfile from "../../../lib/profile/getProfile";
 import createProfile from "../../../lib/profile/createProfile";
 import updateProfile from "../../../lib/profile/updateProfile";
 
-export default function UserProfile( {profile} ) {
-  console.log(profile);
-  const [name, setName] = useState(profile?.name || "");
-  const [image, setImage] = useState(profile?.image || null);
-  const [preview, setPreview] = useState(profile?.image || null);
+export default function UserProfile() {
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("");
+  const [preview, setPreview] = useState("");
   const [profileCreated,setProfileCreated]=useState(false);
 
   useEffect(() => {
-    // Set the preview image if the profile has an existing image
-    if (profile?.image) {
-      setPreview(profile.image);
-    }
-  }, [profile]);
+    const fetchProfile = async () => {
+      const data = await getProfile(localStorage.getItem("token"));
+      if (data) {
+        setName(data.name);
+        setPreview(data.imageUrl);
+        setProfileCreated(true);
+      }
+    };
+    fetchProfile();
+  }, []);
 
   // Handle name change
   const handleNameChange = (e) => {
@@ -54,7 +59,7 @@ export default function UserProfile( {profile} ) {
       formData.append("cloud_name", "dvw5kbnsi");
       imageUrl = await uploadImage(formData);
     }
-   if(!profile && !profileCreated){
+   if(!profileCreated){
     const data=await createProfile(localStorage.getItem("token"),name,imageUrl);
     setProfileCreated(true);
     return;

@@ -1,13 +1,15 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react"; // Import signOut from next-auth
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
+import { useAtom } from "jotai";
+import { tokenState } from "../../lib/stateManagement/tokenState";
 
 export default function SideBarMd() {
-  let token=localStorage.getItem('token')
+  const [token,setToken]=useAtom(tokenState);
   useEffect(()=>{
-  token=localStorage.getItem('token');
-  })
+  setToken(localStorage.getItem('token'));
+  },[])
   const router = useRouter();
 
   // Update handleSignOut to use signOut from NextAuth

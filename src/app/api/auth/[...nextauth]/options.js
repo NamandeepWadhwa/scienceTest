@@ -15,7 +15,7 @@ export const authOptions = {
       if (account.provider === "google") {
         try {
           const data = await getUser(profile.email);
-          console.log("User data retrieved:", data); // Debugging log
+          // Debugging log
           if (data) {
             account.token = data.token; // Attach the token to the account
             return true; // Sign-in is successful
@@ -31,16 +31,19 @@ export const authOptions = {
       return false; // If provider is not Google, sign-in fails
     },
     async session({ session, token }) {
-      // Attach the token to the session object
-      session.user.token = token?.token;
-      return session; // Return the modified session
-    },
+  if (session.user) {
+    session.user.token = token?.token || null; // Safeguard against undefined
+  }
+  return session;
+},
     async jwt({ token, account }) {
-      // If account is defined, this means the user has just signed in
       if (account) {
-        token.token = account.token; // Set the token from account
+        token.token = account.token; // Set token from account
+      } else if (token.token) {
+        // Ensure token persists
+        token.token = token.token;
       }
-      return token; // Return the modified token
+      return token;
     },
   },
 };
