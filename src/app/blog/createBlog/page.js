@@ -1,74 +1,95 @@
-'use client'
-import { useState,useRef,useEffect} from "react";
-import ReactQuill from "react-quill";
+"use strict";
+
+"use client";
+
+import { useState, useRef, useEffect } from "react";
 import "react-quill/dist/quill.snow.css";
-export default function Page()
-{
+import createNewBlog from '../../../../lib/blogs/createNewBlog'
+
+const ReactQuill = require("react-quill");
+
+export default function Page() {
   const [tags, setTags] = useState([]);
-  const[currentTag,setCurrentTag]=useState("");
-  const [title,setTitle]=useState("");
-  const [description,setDescription]=useState("");
+  const [currentTag, setCurrentTag] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const quillRef = useRef(null);
 
   useEffect(() => {
     setDescription("<p>JLKJLK <strong>lkjjlk</strong></p>");
-  },[]);
-  
-  function handleAddTag(e)
-  {
+  }, []);
+
+  function handleAddTag(e) {
     e.preventDefault();
     if (currentTag.trim() === "") {
       alert("Tag cannot be empty");
       return;
     }
-    if(tags.length>=5)
-    {
+    if (tags.length >= 5) {
       alert("You can only add 5 tags");
       return;
     }
     const trimmedTag = currentTag.trim();
-    setCurrentTag(trimmedTag);
-    setTags((prevTags) => {
-     return  prevTags.includes(currentTag)?prevTags:[...prevTags, currentTag];
-    });
+    setTags((prevTags) =>
+      prevTags.includes(trimmedTag) ? prevTags : [...prevTags, trimmedTag]
+    );
     setCurrentTag("");
   }
-  function removeTag(tag)
-  {
-    setTags((prevTags)=>
-    {
-      return prevTags.filter((t)=>t!==tag);
-    })
+
+  function removeTag(tag) {
+    setTags((prevTags) => prevTags.filter((t) => t !== tag));
   }
-  const handleSubmit=(e)=>{
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Submitted");
-    if(title.trim()===""){
-      alert("Title cannot be empty");
+
+    if (title.trim().length < 20 || title.trim().length > 70) {
+      alert("Title should be between 20 and 70 characters");
       return;
     }
-    const rawText=quillRef.current.getEditor().getText();
-    if(rawText.trim()===""){
-      alert("Description cannot be empty");
+
+    const rawText = quillRef.current?.getEditor()?.getText();
+    if (
+      !rawText ||
+      rawText.trim().length < 2500 ||
+      rawText.trim().length > 10000
+    ) {
+      alert("Description should be between 2,500 and 10,000 characters");
       return;
     }
-    console.log(rawText);
-    
-    if(tags.length===0){
-      alert("Please add atleast one tag");
-      return;
-    }
-    
-  }
   
+
+    if (tags.length === 0) {
+      alert("Please add at least one tag");
+      return;
+    }
+    
+    try{
+      const data = {
+        title: title,
+        description: rawText,
+        tags: tags,
+      };
+      const returnedValue=await createNewBlog(data);
+      console.log(returnedValue);
+      return;
+
+
+    }
+    catch(err){
+    alert(err.message);
+    return;
+    }
+   return;
+  };
   return (
     <>
-      <div className="bg-white p-4 " onSubmit={handleSubmit}>
-        <form className="">
+      <div className="bg-white p-4">
+        <form onSubmit={handleSubmit}>
           <div>
-            <label className="block mt-2">Title</label>
+            <label className="block mt-2">Title(20 to 70 characters)</label>
             <input
-              className="w-full  px-5 py-2 rounded border-2 border-black"
+              className="w-full px-5 py-2 rounded border-2 border-black"
               placeholder="Title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -79,48 +100,40 @@ export default function Page()
               <div className="mt-2">
                 <label>Tags (only 5 allowed)</label>{" "}
               </div>
-              {tags.map((tag, index) => {
-                return (
-                  <button
-                    key={index}
-                    className="bg-gray-200 px-3 mt-2 rounded-full mx-2"
-                    onClick={(e) => {
-                      removeTag(tag);
-                    }}
-                  >
-                    {tag} X
-                  </button>
-                );
-              })}
+              {tags.map((tag, index) => (
+                <button
+                  key={index}
+                  className="bg-gray-200 px-3 mt-2 rounded-full mx-2"
+                  type="button"
+                  onClick={() => removeTag(tag)}
+                >
+                  {tag} X
+                </button>
+              ))}
             </div>
-            <div className="flex flex-warap">
+            <div className="flex flex-wrap">
               <input
-                className=" px-5 py-2 border-2 border-black rounded"
+                className="px-5 py-2 border-2 border-black rounded"
                 placeholder="Tag"
                 value={currentTag}
                 onChange={(e) => setCurrentTag(e.target.value)}
               ></input>
               <button
-                className="border-2 border-red-600 rounded-full mx-2 text-white bg-red-600 p-2
-              hover:bg-white hover:text-red-600"
-                onClick={(e) => {
-                  handleAddTag(e);
-                }}
+                className="border-2 border-red-600 rounded-full mx-2 text-white bg-red-600 p-2 hover:bg-white hover:text-red-600"
+                onClick={handleAddTag}
               >
-                {" "}
                 Add Tag
               </button>
             </div>
           </div>
 
           <div>
-            <label className="block mt-2">Description</label>
-
+            <label className="block mt-2">Description(2,500 to 10,,000 characters)</label>
             <ReactQuill
               theme="snow"
               value={description}
               onChange={setDescription}
-              className="h-96 "
+              className="h-48"
               ref={quillRef}
             />
           </div>
@@ -134,7 +147,6 @@ export default function Page()
           </div>
         </form>
       </div>
-      {description}
     </>
   );
 }
