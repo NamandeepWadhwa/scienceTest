@@ -2,7 +2,7 @@
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
-const PUBLIC_PATHS = ["/login", "/", "/_error", "/register","/charts","/blogs/[id]","/blogs","/signin"];
+const PUBLIC_PATHS = ["/login", "/", "/_error", "/register","/charts","/blogs/[id]","/blog","/signin"];
 
 export default function RouteGuard({ children }) {
   const [isAuthenticated, setAuthenticated] = useState(false);
@@ -11,8 +11,13 @@ export default function RouteGuard({ children }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Run the authentication check whenever the path changes
+   let mounted=true;
+    if(mounted){
     authCheck(pathname);
+    }
+    return () => {
+      mounted=false
+    }
   }, [pathname]);
 
   function authCheck(url) {
