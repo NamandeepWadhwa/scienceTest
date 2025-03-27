@@ -2,6 +2,7 @@
 "use client";
 import {useState,useRef, useCallback} from "react";
 import BlogNavbar from "../../../components/blog/navBar";
+import Blog from "../../../components/blog/blog";
 
 
 
@@ -9,12 +10,23 @@ export default function HomePage() {
   const [data,setData]=useState([]);
   const [loading,setLoading]=useState(true);
   const [error,setError]=useState(false);
-  const [hasMore,setHasMore]=useState(true);
+  const [cursorId, setCursorId]=useState(null);
   const[pageNumber,setPageNumber]=useState(1);
+  const [hasMore,setHasMore]=useState(true);
+ const navBlogProps = {
+   setData,
+   setLoading,
+   setError,
+   setCursorId,
+   cursorId,
+   pageNumber,
+   setPageNumber,
+   setHasMore,
+ };
 
   const oberver=useRef();
   const lestElement=useCallback((node)=>{
-    console.log(node);
+    
     if(loading)return;
     if(oberver.current)oberver.current.disconnect();
    
@@ -35,30 +47,25 @@ export default function HomePage() {
   
   return (
     <>
-      <div className="overflow-y-auto h-full">
+     
         <BlogNavbar
-          setData={setData}
-          setLoading={setLoading}
-          setError={setError}
-          setHasMore={setHasMore}
-          pageNumber={pageNumber}
-          setPageNumber={setPageNumber}
+          {...navBlogProps}
         ></BlogNavbar>
         {loading && <h1>Loading...</h1>}
         {error && <h1>Error...</h1>}
-        <div>
+        <div className="h-5/6 overflow-y-auto"> 
           {data &&
-            data.map((d, index) => {
+            data.map((blog, index) => {
               if (index + 1 === data.length)
                 return (
-                  <h1 className="mb-48" ref={lestElement} key={index}>
-                    {d}
-                  </h1>
+                  <div key={index} ref={lestElement}>
+                    <Blog blog={blog} />
+                  </div>
                 );
-              return <h1 key={index}>{d}</h1>;
+              return <Blog key={index} blog={blog} />;
             })}
         </div>
-      </div>
+     
     </>
   );
 }
