@@ -1,26 +1,32 @@
 import { useState, useEffect } from "react";
 import uploadImage from "../../../lib/uploadImage/uploadImage";
-import getProfile from "../../../lib/profile/getProfile";
 import createProfile from "../../../lib/profile/createProfile";
 import updateProfile from "../../../lib/profile/updateProfile";
+import getProfile from "../../../lib/profile/getProfile";
+
 
 export default function UserProfile() {
   const [name, setName] = useState("");
-  const [image, setImage] = useState("");
-  const [preview, setPreview] = useState("");
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(
+   ""
+  );
   const [profileCreated,setProfileCreated]=useState(false);
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const data = await getProfile(localStorage.getItem("token"));
-      if (data) {
-        setName(data.name);
-        setPreview(data.imageUrl);
-        setProfileCreated(true);
-      }
-    };
+ async function fetchProfile() {
+   let token = localStorage.getItem("token");
+   const data = await getProfile(token);
+   if (data) {
+     setName(data.name);
+     setPreview(data.imageUrl);
+     setProfileCreated(true);
+   }
+ }
+  
+  useEffect(()=>{
     fetchProfile();
-  }, []);
+
+  },[])
 
   // Handle name change
   const handleNameChange = (e) => {
@@ -59,13 +65,21 @@ export default function UserProfile() {
       formData.append("cloud_name", "dvw5kbnsi");
       imageUrl = await uploadImage(formData);
     }
+    if(imageUrl==="")
+    {
+      if(preview!=null)imageUrl=preview;
+    }
+   
    if(!profileCreated){
-    const data=await createProfile(localStorage.getItem("token"),name,imageUrl);
+    await createProfile(localStorage.getItem("token"),name,imageUrl);
     setProfileCreated(true);
+    await fetchProfile();
     return;
    }
    else{
-    const data=await updateProfile(localStorage.getItem("token"),name,imageUrl);
+    await updateProfile(localStorage.getItem("token"),name,imageUrl);
+    await fetchProfile();
+    
     return;
    }
   }
