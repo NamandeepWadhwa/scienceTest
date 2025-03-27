@@ -31,16 +31,17 @@ export default function SideBarMd() {
               Home
             </a>
           </li>
-          <li>
-            <a href="#" className="hover:text-gray-600">
-              Pic of the Day
-            </a>
-          </li>
+
           <li>
             <a href="#" className="hover:text-gray-600">
               Blogs
             </a>
           </li>
+         {token && <li>
+            <a href="#" className="hover:text-gray-600">
+              My Blogs
+            </a>
+          </li>}
         </ul>
       </div>
 

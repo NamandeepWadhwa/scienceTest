@@ -1,7 +1,7 @@
 "use strict";
 "use client";
 import axios from "axios";
-import {useState,useRef,useEffect, use} from "react";
+import {useState,useRef,useEffect} from "react";
 import Image from "next/image";
 import getAllBlogs from "../../lib/blogs/getAllBlogs";
 
@@ -22,6 +22,7 @@ export default  function BlogNavbar(props){
   const [byLikes, setByUpvotes] = useState(false);
   const [byNewest, setNewest] = useState(true);
   const inputRef = useRef(null);
+
   const [tag, setTag] = useState(null);
 useEffect(()=>{
   setData([]);
@@ -135,6 +136,7 @@ useEffect(()=>{
         >
           By Newest
         </button>
+   
       </div>
     </>
   );
