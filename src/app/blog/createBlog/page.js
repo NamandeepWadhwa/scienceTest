@@ -1,10 +1,10 @@
 "use strict";
-
 "use client";
 
 import { useState, useRef, useEffect } from "react";
 import "react-quill/dist/quill.snow.css";
 import createNewBlog from '../../../../lib/blogs/createNewBlog'
+
 
 const ReactQuill = require("react-quill");
 
@@ -14,10 +14,29 @@ export default function Page() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const quillRef = useRef(null);
+  const [profile,setProfile]=useState(false);
+  const [loading, setLoading]=useState(false);
+  const[error,setError]=useState(false);
 
-  useEffect(() => {
-    setDescription("<p>JLKJLK <strong>lkjjlk</strong></p>");
-  }, []);
+  
+  useEffect(()=>{
+    try{
+    setLoading(true);
+    if(!localStorage.getItem("Name"))setProfile(false);
+    else setProfile(true);
+
+    
+    setLoading(false);
+  }
+  catch(err)
+  {
+    setError(true);
+    console.log(err);
+    alert("Internal error please try again")
+  }
+
+
+  },[])
 
   function handleAddTag(e) {
     e.preventDefault();
@@ -80,73 +99,95 @@ export default function Page() {
     alert(err.message);
     return;
     }
-   return;
+  
   };
   return (
     <>
-      <div className="bg-white p-4">
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label className="block mt-2">Title(20 to 70 characters)</label>
-            <input
-              className="w-full px-5 py-2 rounded border-2 border-black"
-              placeholder="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            ></input>
-          </div>
-          <div>
-            <div className="flex flex-wrap mb-2">
-              <div className="mt-2">
-                <label>Tags (only 5 allowed)</label>{" "}
-              </div>
-              {tags.map((tag, index) => (
-                <button
-                  key={index}
-                  className="bg-gray-200 px-3 mt-2 rounded-full mx-2"
-                  type="button"
-                  onClick={() => removeTag(tag)}
-                >
-                  {tag} X
-                </button>
-              ))}
-            </div>
-            <div className="flex flex-wrap">
+      {loading && (
+        <div className="text-2xl text-red-600 m-2 flex justify-center items-center">
+          {" "}
+          Loading
+        </div>
+      )}
+      {error && (
+        <div className="text-2xl text-red-600 m-2 flex justify-center items-center">
+          {" "}
+          Some error occured please try again
+        </div>
+      )}
+      {!profile && (
+        <div className="text-2xl text-red-600 m-2 flex justify-center items-center">
+          {" "}
+          Please create profile to create blog
+        </div>
+      )}
+      {profile && (
+        <div className="bg-white p-4">
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label className="block mt-2">Title(20 to 70 characters)</label>
               <input
-                className="px-5 py-2 border-2 border-black rounded"
-                placeholder="Tag"
-                value={currentTag}
-                onChange={(e) => setCurrentTag(e.target.value)}
+                className="w-full px-5 py-2 rounded border-2 border-black"
+                placeholder="Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
               ></input>
+            </div>
+            <div>
+              <div className="flex flex-wrap mb-2">
+                <div className="mt-2">
+                  <label>Tags (only 5 allowed)</label>{" "}
+                </div>
+                {tags.map((tag, index) => (
+                  <button
+                    key={index}
+                    className="bg-gray-200 px-3 mt-2 rounded-full mx-2"
+                    type="button"
+                    onClick={() => removeTag(tag)}
+                  >
+                    {tag} X
+                  </button>
+                ))}
+              </div>
+              <div className="flex flex-wrap">
+                <input
+                  className="px-5 py-2 border-2 border-black rounded"
+                  placeholder="Tag"
+                  value={currentTag}
+                  onChange={(e) => setCurrentTag(e.target.value)}
+                ></input>
+                <button
+                  className="border-2 border-red-600 rounded-full mx-2 text-white bg-red-600 p-2 hover:bg-white hover:text-red-600"
+                  onClick={handleAddTag}
+                >
+                  Add Tag
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label className="block mt-2">
+                Description(2,500 to 10,,000 characters)
+              </label>
+              <ReactQuill
+                theme="snow"
+                value={description}
+                onChange={setDescription}
+                className="h-48"
+                ref={quillRef}
+              />
+            </div>
+            <div className="mt-10">
               <button
-                className="border-2 border-red-600 rounded-full mx-2 text-white bg-red-600 p-2 hover:bg-white hover:text-red-600"
-                onClick={handleAddTag}
+                type="submit"
+                className="mt-16 md:mt-4 py-2 px-4 bg-blue-500 hover:bg-blue-600 rounded-full text-white text-sm"
               >
-                Add Tag
+                Submit
               </button>
             </div>
-          </div>
-
-          <div>
-            <label className="block mt-2">Description(2,500 to 10,,000 characters)</label>
-            <ReactQuill
-              theme="snow"
-              value={description}
-              onChange={setDescription}
-              className="h-48"
-              ref={quillRef}
-            />
-          </div>
-          <div className="mt-10">
-            <button
-              type="submit"
-              className="mt-2 py-2 px-4 bg-blue-500 hover:bg-blue-600 rounded-full text-white text-sm"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
-      </div>
+          </form>
+        </div>
+      )}
     </>
   );
 }

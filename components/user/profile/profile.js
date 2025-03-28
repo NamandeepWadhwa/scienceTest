@@ -1,3 +1,4 @@
+"use client"
 import { useState, useEffect } from "react";
 import uploadImage from "../../../lib/uploadImage/uploadImage";
 import createProfile from "../../../lib/profile/createProfile";
@@ -20,6 +21,7 @@ export default function UserProfile() {
      setName(data.name);
      setPreview(data.imageUrl);
      setProfileCreated(true);
+     localStorage.setItem("Name", data.name);
    }
  }
   
