@@ -44,7 +44,7 @@ export default function Blog(blog) {
       </div>
       <div className="m-5 text-2xl">{blog.blog.title}</div>
       <div className="flex flex-wrap">
-        <span className="ml-5">{formatDate(blog.blog.updatedAt)}</span>
+        <span className="ml-5">{formatDate(blog.blog.createdAt)}</span>
         <div className="flex flex-wrap ml-5">
           <span>
             <Image src="/images/heart.png" width={25} height={25} alt="likes" />

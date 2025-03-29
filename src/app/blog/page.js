@@ -58,7 +58,7 @@ export default function HomePage() {
             data.map((blog, index) => {
               if (index + 1 === data.length)
                 return (
-                  <div key={index} ref={lestElement}>
+                  <div key={index} ref={lestElement} className="mb-28">
                     <Blog blog={blog} />
                   </div>
                 );

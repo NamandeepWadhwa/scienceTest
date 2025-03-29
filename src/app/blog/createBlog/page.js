@@ -3,6 +3,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import "react-quill/dist/quill.snow.css";
+import DOMPurify from "dompurify";
 import createNewBlog from '../../../../lib/blogs/createNewBlog'
 
 
@@ -17,6 +18,7 @@ export default function Page() {
   const [profile,setProfile]=useState(false);
   const [loading, setLoading]=useState(false);
   const[error,setError]=useState(false);
+  const[submitting, setSubmitting]=useState(false);
 
   
   useEffect(()=>{
@@ -68,6 +70,8 @@ export default function Page() {
     }
 
     const rawText = quillRef.current?.getEditor()?.getText();
+    const sanitizedContent=DOMPurify.sanitize(description);
+
     if (
       !rawText ||
       rawText.trim().length < 2500 ||
@@ -82,16 +86,26 @@ export default function Page() {
       alert("Please add at least one tag");
       return;
     }
+ 
+
     
     try{
+      setSubmitting(true);
       const data = {
         title: title,
-        description: rawText,
+        description:sanitizedContent,
         tags: tags,
       };
       const returnedValue=await createNewBlog(data);
       console.log(returnedValue);
+      alert("Blog created succefully")
+      setSubmitting(false);
+      setTags([]);
+      setTitle("");
+      setDescription("");
+      setCurrentTag("");
       return;
+     
 
 
     }
@@ -182,7 +196,7 @@ export default function Page() {
                 type="submit"
                 className="mt-16 md:mt-4 py-2 px-4 bg-blue-500 hover:bg-blue-600 rounded-full text-white text-sm"
               >
-                Submit
+              {submitting?"Loading":"Submit"}
               </button>
             </div>
           </form>
