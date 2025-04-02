@@ -15,6 +15,7 @@ export default function SideBarMd() {
   // Update handleSignOut to use signOut from NextAuth
   const handleSignOut = async () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("Name");
   
     await signOut({ callbackUrl: "/signin" }); // Redirect after sign out
   };
