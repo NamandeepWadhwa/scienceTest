@@ -53,7 +53,7 @@ export default function HomePage() {
         ></BlogNavbar>
         {loading && <h1>Loading...</h1>}
         {error && <h1>Error...</h1>}
-        <div className="h-5/6 overflow-y-auto"> 
+        <div className="h-4/5 overflow-y-auto"> 
           {data &&
             data.map((blog, index) => {
               if (index + 1 === data.length)

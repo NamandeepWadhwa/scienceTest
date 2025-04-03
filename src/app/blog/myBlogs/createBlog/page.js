@@ -1,15 +1,11 @@
 "use strict";
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import dynamic from "next/dynamic";
+import { useState, useRef, useEffect,useMemo} from "react";
 import "react-quill/dist/quill.snow.css";
 import DOMPurify from "dompurify";
-import createNewBlog from "../../../../lib/blogs/createNewBlog";
-
-// Dynamically import ReactQuill to avoid server-side rendering issues
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-
+import dynamic from "next/dynamic";
+import createNewBlog from "../../../../../lib/blogs/createNewBlog";
 export default function Page() {
   const [tags, setTags] = useState([]);
   const [currentTag, setCurrentTag] = useState("");
@@ -20,7 +16,10 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
   const [sanitizedContent, setSanitizedContent] = useState("");
+const ReactQuill = typeof window === "object" ? require("react-quill") : () => false;
+
 
   useEffect(() => {
     try {
@@ -69,6 +68,7 @@ export default function Page() {
 
     // Ensure sanitization only happens on the client side
     const rawText = quillRef.current?.getEditor()?.getText();
+    console.log(ReactQuill);
 
     if (
       !rawText ||
@@ -180,13 +180,15 @@ export default function Page() {
               <label className="block mt-2">
                 Description (2,500 to 10,000 characters)
               </label>
-              <ReactQuill
-                theme="snow"
-                value={description}
-                onChange={setDescription}
-                className="h-48"
-                ref={quillRef}
-              />
+             
+                <ReactQuill
+                  theme="snow"
+                  value={description}
+                  onChange={setDescription}
+                  className="h-48"
+                  ref={quillRef}
+                />
+              
             </div>
             <div className="mt-10">
               <button

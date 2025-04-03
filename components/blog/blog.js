@@ -1,6 +1,8 @@
 "use strict";
+
 import UserAvatar from "./userAvatar";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 export default function Blog(blog) {
 
   function formatDate(dateString) {
@@ -11,12 +13,17 @@ export default function Blog(blog) {
       year: "numeric",
     });
   }
+  const router=useRouter();
   
   return (
     <div
       className="flex flex-col border-b-2 border-gray-200 mx-5 mt-5 cursor-pointer"
       id={blog.blog.id}
       role="button"
+      onClick={()=>{
+        router.push(`/blog/${blog.blog.id}`);
+
+      }}
     >
       <div className="flex flex-wrap items-center py-2">
         <UserAvatar userId={blog.blog.userId} />

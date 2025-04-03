@@ -1,6 +1,6 @@
 "use client";
 import getRandomProfile from "../../lib/profile/getRandomProfile";
-
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function UserAvatar({ userId }) {
@@ -32,9 +32,9 @@ export default function UserAvatar({ userId }) {
       {profile && (
         <>
           <div className="mx-5">
-            <img
+            <Image
               className="rounded-full border-2 border-black"
-              src={"/images/search.png"}
+              src={profile.imageUrl ? profile.imageUrl : "/images/search.png"}
               width={50}
               height={50}
               alt="author"
@@ -46,7 +46,7 @@ export default function UserAvatar({ userId }) {
       {!profile && (
         <>
           <div className="mx-5">
-            <img
+            <Image
               className="rounded-full border-2 border-black"
               src="/images/search.png"
               width={50}
@@ -60,4 +60,3 @@ export default function UserAvatar({ userId }) {
     </>
   );
 }
-
