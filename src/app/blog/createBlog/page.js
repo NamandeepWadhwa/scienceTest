@@ -2,12 +2,13 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 import DOMPurify from "dompurify";
-import createNewBlog from '../../../../lib/blogs/createNewBlog'
+import createNewBlog from "../../../../lib/blogs/createNewBlog";
 
-
-const ReactQuill = require("react-quill");
+// Dynamically import ReactQuill to avoid server-side rendering issues
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 export default function Page() {
   const [tags, setTags] = useState([]);
@@ -15,31 +16,26 @@ export default function Page() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const quillRef = useRef(null);
-  const [profile,setProfile]=useState(false);
-  const [loading, setLoading]=useState(false);
-  const[error,setError]=useState(false);
-  const[submitting, setSubmitting]=useState(false);
+  const [profile, setProfile] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [sanitizedContent, setSanitizedContent] = useState("");
 
-  
-  useEffect(()=>{
-    try{
-    setLoading(true);
-    if(!localStorage.getItem("Name"))setProfile(false);
-    else setProfile(true);
+  useEffect(() => {
+    try {
+      setLoading(true);
+      if (!localStorage.getItem("Name")) setProfile(false);
+      else setProfile(true);
+      setLoading(false);
+    } catch (err) {
+      setError(true);
+      console.log(err);
+      alert("Internal error please try again");
+    }
+  }, []);
 
-    
-    setLoading(false);
-  }
-  catch(err)
-  {
-    setError(true);
-    console.log(err);
-    alert("Internal error please try again")
-  }
-
-
-  },[])
-
+  // Handle adding tags
   function handleAddTag(e) {
     e.preventDefault();
     if (currentTag.trim() === "") {
@@ -57,10 +53,12 @@ export default function Page() {
     setCurrentTag("");
   }
 
+  // Remove a tag
   function removeTag(tag) {
     setTags((prevTags) => prevTags.filter((t) => t !== tag));
   }
 
+  // Handle the submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -69,8 +67,8 @@ export default function Page() {
       return;
     }
 
+    // Ensure sanitization only happens on the client side
     const rawText = quillRef.current?.getEditor()?.getText();
-    const sanitizedContent=DOMPurify.sanitize(description);
 
     if (
       !rawText ||
@@ -80,41 +78,40 @@ export default function Page() {
       alert("Description should be between 2,500 and 10,000 characters");
       return;
     }
-  
 
     if (tags.length === 0) {
       alert("Please add at least one tag");
       return;
     }
- 
 
-    
-    try{
+    try {
       setSubmitting(true);
       const data = {
         title: title,
-        description:sanitizedContent,
+        description: sanitizedContent,
         tags: tags,
       };
-      const returnedValue=await createNewBlog(data);
+      const returnedValue = await createNewBlog(data);
       console.log(returnedValue);
-      alert("Blog created succefully")
+      alert("Blog created successfully");
       setSubmitting(false);
       setTags([]);
       setTitle("");
       setDescription("");
       setCurrentTag("");
       return;
-     
-
-
+    } catch (err) {
+      alert(err.message);
+      return;
     }
-    catch(err){
-    alert(err.message);
-    return;
-    }
-  
   };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setSanitizedContent(DOMPurify.sanitize(description));
+    }
+  }, [description]);
+
   return (
     <>
       {loading && (
@@ -126,7 +123,7 @@ export default function Page() {
       {error && (
         <div className="text-2xl text-red-600 m-2 flex justify-center items-center">
           {" "}
-          Some error occured please try again
+          Some error occurred, please try again
         </div>
       )}
       {!profile && (
@@ -139,7 +136,7 @@ export default function Page() {
         <div className="bg-white p-4">
           <form onSubmit={handleSubmit}>
             <div>
-              <label className="block mt-2">Title(20 to 70 characters)</label>
+              <label className="block mt-2">Title (20 to 70 characters)</label>
               <input
                 className="w-full px-5 py-2 rounded border-2 border-black"
                 placeholder="Title"
@@ -181,7 +178,7 @@ export default function Page() {
 
             <div>
               <label className="block mt-2">
-                Description(2,500 to 10,,000 characters)
+                Description (2,500 to 10,000 characters)
               </label>
               <ReactQuill
                 theme="snow"
@@ -196,7 +193,7 @@ export default function Page() {
                 type="submit"
                 className="mt-16 md:mt-4 py-2 px-4 bg-blue-500 hover:bg-blue-600 rounded-full text-white text-sm"
               >
-              {submitting?"Loading":"Submit"}
+                {submitting ? "Loading" : "Submit"}
               </button>
             </div>
           </form>

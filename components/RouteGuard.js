@@ -2,7 +2,7 @@
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
-const PUBLIC_PATHS = ["/login", "/", "/_error", "/register","/charts","/blogs/[id]","/blog","/signin"];
+const PUBLIC_PATHS = ["/login", "/", "/_error", "/register","/charts","/blog","/signin"];
 
 export default function RouteGuard({ children }) {
   const [isAuthenticated, setAuthenticated] = useState(false);
@@ -11,13 +11,8 @@ export default function RouteGuard({ children }) {
   const pathname = usePathname();
 
   useEffect(() => {
-   let mounted=true;
-    if(mounted){
-    authCheck(pathname);
-    }
-    return () => {
-      mounted=false
-    }
+   authCheck(pathname); // Call authCheck whenever the pathname changes
+
   }, [pathname]);
 
   function authCheck(url) {
@@ -25,14 +20,14 @@ export default function RouteGuard({ children }) {
 
     // Check if the token is in localStorage
     const token = localStorage.getItem("token");
-
-    if (!token && !PUBLIC_PATHS.includes(path)) {
-      console.log(`Trying to access a protected path: ${path}`);
-      setAuthenticated(false);
-      router.push("/signin"); // Redirect if not authenticated
-    } else {
-      setAuthenticated(true); // User is authenticated or on a public path
-    }
+    if (path.startsWith("/blog/myBlog/"))router.push("/signin")// Redirect to sign-in if trying to access a protected path
+      if (!token && !PUBLIC_PATHS.includes(path)) {
+        console.log(`Trying to access a protected path: ${path}`);
+        setAuthenticated(false);
+        router.push("/signin"); // Redirect if not authenticated
+      } else {
+        setAuthenticated(true); // User is authenticated or on a public path
+      }
 
     setLoading(false); // Authentication check is complete
   }

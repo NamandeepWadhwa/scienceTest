@@ -106,7 +106,7 @@ return (
       </div>
       <div className="flex flex-wrap">
         <Link
-          href="/blog/createBlog"
+          href="/blog/myBlogs/createBlog"
           role="button"
           className="m-3 border-red-600 border-2 px-2 rounded-xl hover:text-white hover:bg-red-600 text-xl
         transition-all duration-300 ease-in-out"

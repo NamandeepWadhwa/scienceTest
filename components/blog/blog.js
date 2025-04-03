@@ -1,7 +1,6 @@
 "use strict";
-
+import UserAvatar from "./userAvatar";
 import Image from "next/image";
-
 export default function Blog(blog) {
 
   function formatDate(dateString) {
@@ -20,16 +19,8 @@ export default function Blog(blog) {
       role="button"
     >
       <div className="flex flex-wrap items-center py-2">
-        <div className="mx-5">
-          <Image
-            className="rounded-full border-2 border-black"
-            src="/images/search.png"
-            width={50}
-            height={50}
-            alt="author"
-          />
-        </div>
-        <span className="mr-5 text-2xl">Author Name</span>
+        <UserAvatar userId={blog.blog.userId} />
+       
         <div className="flex flex-wrap">
           {blog.blog.tags.map((tag, index) => (
             <span

@@ -1,7 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["apod.nasa.gov"], // Allow images from NASA APOD domain
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "apod.nasa.gov",
+        pathname: "/apod/image/**",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "/dvw5kbnsi/*",
+      },
+    ],
   },
 };
 
