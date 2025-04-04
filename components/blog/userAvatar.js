@@ -33,6 +33,7 @@ export default function UserAvatar({ userId }) {
         <>
           <div className="mx-5">
             <Image
+            loading="lazy"
               className="rounded-full border-2 border-black"
               src={profile.imageUrl ? profile.imageUrl : "/images/search.png"}
               width={50}
