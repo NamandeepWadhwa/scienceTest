@@ -1,23 +1,55 @@
+"use client";
 import getRandomProfile from "../../lib/profile/getRandomProfile";
 import Image from "next/image";
+import { useRouter } from "next/navigation"; 
+import { useState,useEffect } from "react"; 
 
 export default function BlogAvatar({ userId }) {
-  try{
-    const profile=getRandomProfile(userId);
-    return (
-    <div className=" mt-4 flex flex-wrap items-center">
-      <div>
-        <Image className="rounded-full border-2 border-black" 
-        src={profile.imageUrl?profile.imageUrl:"/images/search.png"}
-        width={100} height={100} alt="author"/>
+  const [profile, setProfile] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  useEffect(()=>{
+    const fetchProfile = async () => {
+      try {
+        setLoading(true);
+        const profileData = await getRandomProfile(userId);
+        if(profileData!=null)setProfile(profileData);
+        
+        setLoading(false);
+      } catch (error) {
+        setError(true);
+        console.error("Error fetching profile:", error);
+      }
+    };
 
+    fetchProfile();
+  },[userId])
+  const router = useRouter();    
+  return (
+    <>
+      <div
+        className=" mt-4 flex flex-wrap items-center w-fit"
+        role="button"
+        onClick={() => {
+          router.push(`/blog/user/${userId}?name=${profile.name}`);
+        }}
+      >
+        <div>
+          <Image
+            className="rounded-full border-2 border-black"
+            src={profile.imageUrl ? profile.imageUrl : "/images/search.png"}
+            width={50}
+            height={50}
+            alt="author"
+          />
+        </div>
+        <span className="mt-3 sm:mt-0 ml-3 text-4xl">
+          {profile.name ? profile.name : "Author Name"}
+        </span>
       </div>
-      <span className="mt-3 sm:mt-0 ml-3 text-4xl">{profile.name?profile.name:"Author Name"}</span>
-      
-      </div>)
-  }
-  catch(err)
-  {
-    return <div>There was an error getting the profile</div>
-  }
+
+      {loading && <div className="text-red-500">Loading...</div>}
+      {error && <div className="text-red-500">Error in fetching profile</div>}
+    </>
+  );
 }

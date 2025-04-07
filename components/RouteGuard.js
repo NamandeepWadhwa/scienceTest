@@ -2,7 +2,7 @@
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
-const PUBLIC_PATHS = ["/login", "/", "/_error", "/register","/charts","/blog","/signin"];
+const PRIVAETE_PATHS =["/blog/myBlogs"];
 
 export default function RouteGuard({ children }) {
   const [isAuthenticated, setAuthenticated] = useState(false);
@@ -20,9 +20,8 @@ export default function RouteGuard({ children }) {
 
     // Check if the token is in localStorage
     const token = localStorage.getItem("token");
-    if (path.startsWith("/blog/myBlog/"))router.push("/signin")// Redirect to sign-in if trying to access a protected path
-      if (!token && !PUBLIC_PATHS.includes(path)) {
-        console.log(`Trying to access a protected path: ${path}`);
+      if (!token && PRIVAETE_PATHS.includes(path)) {
+       
         setAuthenticated(false);
         router.push("/signin"); // Redirect if not authenticated
       } else {

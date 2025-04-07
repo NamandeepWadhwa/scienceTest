@@ -32,12 +32,11 @@ export default function Information( {data }) {
       <div className="min-w-full"></div>
       <div className="relative min-h-screen w-full">
         <Image
-          src={data.url}
+          src={data.hdurl}
           alt="NASA Image of the Day"
           className="absolute inset-0 w-full h-full object-cover"
-          width={100}
-          height={100}
-          priority
+          loading="lazy"
+          fill
         />
       </div>
 
@@ -50,7 +49,7 @@ export default function Information( {data }) {
             Copy right by :{`${data.copyright ?? "None"}`}
           </div>
         </div>
-        <h2 className="text-2xl font-bold text-center px-4">
+        <h2 className="text-2xl  text-center px-4">
           {data.explanation}
         </h2>
       </div>

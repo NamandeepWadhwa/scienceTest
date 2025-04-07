@@ -18,7 +18,7 @@ try{
  
   return (
     <>
-      <div className="mx-5 flex flex-col overflow-y-auto h-screen pb-20">
+      <div className="mx-5 flex flex-col overflow-y-auto h-screen pb-20 focus:outline-none">
         <BlogAvatar userId={blog.userId} />
         <div className="flex flex-col md:flex-row flex-warp md:items-center justify-between mt-5 ml-3 md:ml-0">
           <span className="text-3xl">{blog.title}</span>
@@ -30,7 +30,10 @@ try{
             </div>
           </div>
         </div>
-        <div className="text-2xl mt-5">{blog.content}</div>
+        <div
+          className="prose prose-lg mt-5 max-w-none text-black"
+          dangerouslySetInnerHTML={{ __html: blog.content }}
+        ></div>
         <div className="w-full border-b-2 mt-10 pb-2 flex flex-warp justify-between ">
           <input
             placeholder="Add a comment..."

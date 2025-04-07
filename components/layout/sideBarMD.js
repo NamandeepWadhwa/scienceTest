@@ -24,7 +24,6 @@ export default function SideBarMd() {
 
   return (
     <>
-      <div className="absolute left-0 m-5 bg-red-600">Logo</div>
       <div className="hidden md:flex justify-between text-reguarlText m-5 text-lg">
         <ul className="flex space-x-8">
           <li>
