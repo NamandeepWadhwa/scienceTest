@@ -31,7 +31,7 @@ export default function UserAvatar({ userId }) {
       {loading && <p className="text-gray-500">Loading...</p>}
       {profile && (
         <>
-          <div className="mx-5">
+          <div className="mx-3">
             <Image
             loading="lazy"
               className="rounded-full border-2 border-black"
@@ -46,7 +46,7 @@ export default function UserAvatar({ userId }) {
       )}
       {!profile && (
         <>
-          <div className="mx-5">
+          <div className="mx-3">
             <Image
               className="rounded-full border-2 border-black"
               src="/images/search.png"

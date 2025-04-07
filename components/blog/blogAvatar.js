@@ -28,7 +28,7 @@ export default function BlogAvatar({ userId }) {
   return (
     <>
       <div
-        className=" mt-4 flex flex-wrap items-center w-fit"
+        className=" flex flex-wrap items-center w-fit"
         role="button"
         onClick={() => {
           router.push(`/blog/user/${userId}?name=${profile.name}`);
@@ -43,7 +43,7 @@ export default function BlogAvatar({ userId }) {
             alt="author"
           />
         </div>
-        <span className="mt-3 sm:mt-0 ml-3 text-4xl">
+        <span className=" sm:mt-0 ml-3 text-4xl">
           {profile.name ? profile.name : "Author Name"}
         </span>
       </div>

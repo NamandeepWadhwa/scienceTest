@@ -1,10 +1,9 @@
 "use strict";
 "use client";
 
-import { useState, useRef, useEffect,useMemo} from "react";
+import { useState, useRef, useEffect} from "react";
 import "react-quill/dist/quill.snow.css";
 import DOMPurify from "dompurify";
-import dynamic from "next/dynamic";
 import createNewBlog from "../../../../../lib/blogs/createNewBlog";
 export default function Page() {
   const [tags, setTags] = useState([]);

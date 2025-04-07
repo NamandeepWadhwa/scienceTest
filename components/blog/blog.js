@@ -17,7 +17,7 @@ export default function Blog(blog) {
   
   return (
     <div
-      className="flex flex-col border-b-2 border-gray-200 mx-5 mt-5 cursor-pointer"
+      className="flex flex-col border-b-2 border-gray-200  mt-5 cursor-pointer"
       id={blog.blog.id}
       role="button"
       onClick={()=>{
