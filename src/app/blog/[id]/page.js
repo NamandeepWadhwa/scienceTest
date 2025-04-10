@@ -35,7 +35,7 @@ try{
           className="prose prose-lg mt-5 max-w-none text-black"
           dangerouslySetInnerHTML={{ __html: blog.content }}
         ></div>
-        <BlogComment  userId={blog.userId} />
+        <BlogComment  blogId={blog.id} />
       </div>
     </>
   );
