@@ -97,13 +97,56 @@ export default function BlogScroll({isExternal,userId=null})
           {data &&
             data.map((blog, index) => {
               if (index + 1 === data.length) {
+                if(isExternal)return <div key={index} ref={lastElement} className="mb-28 flex-flex-col">
+                  <Blog blog={blog}></Blog>
+                  </div>
+                  else
+
                 return (
-                  <div key={index} ref={lastElement} className="mb-28">
+                  <div
+                    key={index}
+                    ref={lastElement}
+                    className="mb-28 flex-flex-col"
+                  >
                     <Blog blog={blog}></Blog>
+                    <div className="flex flex-warp m-5">
+                      <button
+                        className="mr-2 text-red-600 text-xl border-red-600 border-2 bg-white px-5 pb-1 rounded-2xl
+                      hover:bg-red-600 hover:text-white ease-in duration-300"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="mr-2 text-red-600 text-xl border-red-600 border-2 bg-white px-5 pb-1 rounded-2xl
+                      hover:bg-red-600 hover:text-white ease-in duration-300"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 );
               }
-              return <Blog key={index} blog={blog}></Blog>;
+              if(isExternal)return <Blog key={index} blog={blog}></Blog>;
+              else
+              return (
+                <div className="flex flex-col">
+                  <Blog key={index} blog={blog}></Blog>
+                  <div className="flex flex-warp m-5">
+                    <button
+                      className="mr-2 text-red-600 text-xl border-red-600 border-2 bg-white px-5 pb-1 rounded-2xl
+                      hover:bg-red-600 hover:text-white ease-in duration-300"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="mr-2 text-red-600 text-xl border-red-600 border-2 bg-white px-5 pb-1 rounded-2xl
+                      hover:bg-red-600 hover:text-white ease-in duration-300"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              );
             })}
           {loading && <div className="text-red-600 text-2xl mb-28">Loading</div>}
           {error && <div className="text-red-600">There was some error, plase try again later</div>}

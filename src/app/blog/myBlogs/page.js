@@ -23,8 +23,8 @@ return (
         <button
           className={
             blog
-              ? "m-3 border-2 text-xl px-3 pb-1 text-white border-red-600  rounded-xl bg-red-600 "
-              : "m-3 border-2 text-xl border-red-600 px-3 rounded-xl pb-1 "
+              ? "m-3 border-2 text-xl px-3 pb-1 text-white border-red-600  rounded-xl bg-red-600 duration-300 ease-in"
+              : "m-3 border-2 text-xl border-red-600 px-3 rounded-xl pb-1 duration-300 ease-in "
           }
           onClick={handleBlogCommentClick}
         >
@@ -33,8 +33,8 @@ return (
         <button
           className={
             comment
-              ? "m-3 border-2 text-xl text-white border-red-600  px-2 rounded-xl bg-red-600 pb-1 "
-              : "m-3 border-2 text-xl border-red-600 px-3 rounded-xl pb-1r"
+              ? "m-3 border-2 text-xl text-white border-red-600  px-2 rounded-xl bg-red-600 pb-1 duration-300 ease-in "
+              : "m-3 border-2 text-xl border-red-600 px-2 rounded-xl pb-1r"
           }
           onClick={handleBlogCommentClick}
         >
@@ -53,8 +53,7 @@ return (
       </div>
     </div>
 
-    
-    <BlogScroll isExternal={false} userId={null}/>
+    <BlogScroll isExternal={false} userId={null} />
   </>
 );
 

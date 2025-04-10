@@ -2,6 +2,7 @@
 "use server";
 import  getBlogInfo from "../../../../lib/blogs/getBlogInfo";
 import BlogAvatar from "../../../../components/blog/blogAvatar";
+import BlogComment from "../../../../components/comments/getBlogComments";
 import Image from "next/image";
 export default async function Page({params}) {
   function formatDate(dateString) {
@@ -34,15 +35,7 @@ try{
           className="prose prose-lg mt-5 max-w-none text-black"
           dangerouslySetInnerHTML={{ __html: blog.content }}
         ></div>
-        <div className="w-full border-b-2 mt-10 pb-2 flex flex-warp justify-between ">
-          <input
-            placeholder="Add a comment..."
-            className="w-4/5 px-4 py-2  focus:outline-none "
-          />
-          <button className="bg-red-600 text-white px-4 py-2 rounded-lg ml-2">
-            Submit
-          </button>
-        </div>
+        <BlogComment  userId={blog.userId} />
       </div>
     </>
   );
