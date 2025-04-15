@@ -29,12 +29,12 @@ export default function Sign() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email, password);
+
 
     if (email === "estUser@xyz.com" || password === "TestPassword@123")
       {
      const data = await getTestUser(email, password);
-     console.log(data);
+ 
       if (data) {
         alert("You are now logged in");
         localStorage.setItem("token", data.token);

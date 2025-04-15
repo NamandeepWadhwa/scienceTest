@@ -3,6 +3,7 @@
 import  getBlogInfo from "../../../../lib/blogs/getBlogInfo";
 import BlogAvatar from "../../../../components/blog/blogAvatar";
 import BlogComment from "../../../../components/comments/getBlogComments";
+import UpVotes from "../../../../components/blog/upVote";
 import Image from "next/image";
 export default async function Page({params}) {
   function formatDate(dateString) {
@@ -25,10 +26,7 @@ try{
           <span className="text-3xl">{blog.title}</span>
           <div className="flex flex-wrap items-center mt-3 md:mt-0">
             <span className="mr-3">{formatDate(blog.createdAt)}</span>
-            <div className="flex flex-warp items-center">
-              <Image src="/images/heart.png" height={30} width={30}></Image>
-              <span>{blog.upvotes}</span>
-            </div>
+<UpVotes blogId={blog.id} upVotes={blog.upvotes}/>
           </div>
         </div>
         <div
