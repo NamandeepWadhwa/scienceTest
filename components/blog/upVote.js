@@ -18,42 +18,30 @@ export default function UpVotes({blogId,upVotes}){
     
   };
   async function handleChange() {
-    console.log("handleChange")
-    if(isUpvoted)setTotalNumber((prevNumber)=>{return prevNumber-1});
-    else setTotalNumber((prevNumber)=>{return prevNumber+1});
-    setUpVoted(!isUpvoted);
+ 
+    const prevUpvoted = isUpvoted;
+    const prenNumber = totalNumber;
     try{
-      const data=await changeUpvotes(isUpvoted,blogId,localStorage.getItem("token"));
-      console.log(data);
-      setTotalNumber(data.upVotes);
-      setUpVoted(data.isUpvoted);
-      return;
-    
-
-    }
-    catch(err)
-    {
-      if(isUpvoted)setTotalNumber((prevNumber)=>{return prevNumber-1});
-      else setTotalNumber((prevNumber)=>{return prevNumber+1});
+      if(isUpvoted)
+      {
+        setTotalNumber(totalNumber-1);
+      }
+      else
+      {
+        setTotalNumber(totalNumber+1);
+      }
       setUpVoted(!isUpvoted);
-
+    await changeUpvotes(isUpvoted, blogId, localStorage.getItem("token"));
     }
-    
+    catch(err) {
+      setTotalNumber(prenNumber);
+      setUpVoted(prevUpvoted);
+      console.log(err);
+    }
   }
-  async  function changeUpVote(){
-   try{
-    const newValue=await changeUpVote(isUpvoted,blogId);
-    setUpVoted(newValue.upVoted);
-    setTotalNumber(newValue.totalNumber);
-   }
-   catch(err)
-   {
-    throw err;
-
-   }
-  }
+  
   useEffect(()=>{
-    //checkUpvote();
+    checkUpvote();
   },[]);
 
   return (

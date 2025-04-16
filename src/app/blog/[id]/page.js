@@ -4,7 +4,6 @@ import  getBlogInfo from "../../../../lib/blogs/getBlogInfo";
 import BlogAvatar from "../../../../components/blog/blogAvatar";
 import BlogComment from "../../../../components/comments/getBlogComments";
 import UpVotes from "../../../../components/blog/upVote";
-import Image from "next/image";
 export default async function Page({params}) {
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -17,7 +16,6 @@ export default async function Page({params}) {
 const {id}=params;
 try{
   const blog=await getBlogInfo(id);
- 
   return (
     <>
       <div className="mx-5 flex flex-col overflow-y-auto h-screen pb-20 focus:outline-none">
