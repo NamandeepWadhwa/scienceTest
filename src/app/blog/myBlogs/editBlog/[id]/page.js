@@ -1,37 +1,43 @@
 "use strict";
 "use client";
 
-import { useState, useRef, useEffect, use} from "react";
+import { useState, useRef, useEffect} from "react";
 import "react-quill/dist/quill.snow.css";
-import getBlogInfo from "../../../../../lib/blogs/getBlogInfo";
+import updateBlog from "../../../../../../lib/blogs/updateBlog";
+import getBlogInfo from "../../../../../../lib/blogs/getBlogInfo";
 import DOMPurify from "dompurify";
-import createNewBlog from "../../../../../lib/blogs/createNewBlog";
-export default function Page() {
+export default function Page({params}) {
   const [tags, setTags] = useState([]);
   const [currentTag, setCurrentTag] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const quillRef = useRef(null);
-  const [profile, setProfile] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const [sanitizedContent, setSanitizedContent] = useState("");
-const ReactQuill = typeof window === "object" ? require("react-quill") : () => false;
+  const ReactQuill =
+    typeof window === "object" ? require("react-quill") : () => false;
 
-
-
+    const id = params.id;
   useEffect(() => {
-    try {
+    try{
       setLoading(true);
-      if (!localStorage.getItem("Name")) setProfile(false);
-      else setProfile(true);
-      setLoading(false);
-    } catch (err) {
+      async function fetchData() {
+        const blog=await getBlogInfo(id);
+        setTitle(blog.title);
+        setDescription(blog.content);
+        setTags(blog.tags);
+        setDescription(blog.content);
+        setLoading(false);
+      }
+      fetchData();
+    }
+    catch (err) {
       setError(true);
       console.log(err);
-      alert("Internal error please try again");
+    
     }
   }, []);
 
@@ -88,21 +94,25 @@ const ReactQuill = typeof window === "object" ? require("react-quill") : () => f
     try {
       setSubmitting(true);
       const data = {
+        id:id,
         title: title,
-        description: sanitizedContent,
+        content: sanitizedContent,
         tags: tags,
       };
-      const returnedValue = await createNewBlog(data);
+      const returnedValue = await updateBlog(data);
+      if(returnedValue!=null){
       console.log(returnedValue);
       alert("Blog created successfully");
       setSubmitting(false);
-      setTags([]);
-      setTitle("");
-      setDescription("");
-      setCurrentTag("");
+      setTitle(returnedValue.title);
+      setTags(returnedValue.tags);
+      setDescription(returnedValue.content);
+      }
+      setSubmitting(false);
+
       return;
     } catch (err) {
-      alert(err.message);
+     
       return;
     }
   };
@@ -127,13 +137,8 @@ const ReactQuill = typeof window === "object" ? require("react-quill") : () => f
           Some error occurred, please try again
         </div>
       )}
-      {!profile && (
-        <div className="text-2xl text-red-600 m-2 flex justify-center items-center">
-          {" "}
-          Please create profile to create blog
-        </div>
-      )}
-      {profile && (
+
+      {!loading && !error && (
         <div className="bg-white p-4">
           <form onSubmit={handleSubmit}>
             <div>
@@ -181,20 +186,20 @@ const ReactQuill = typeof window === "object" ? require("react-quill") : () => f
               <label className="block mt-2">
                 Description (2,500 to 10,000 characters)
               </label>
-             
-                <ReactQuill
-                  theme="snow"
-                  value={description}
-                  onChange={setDescription}
-                  className="h-48"
-                  ref={quillRef}
-                />
-              
+
+              <ReactQuill
+                theme="snow"
+                value={description}
+                onChange={setDescription}
+                className="h-48"
+                ref={quillRef}
+              />
             </div>
             <div className="mt-10">
               <button
                 type="submit"
                 className="mt-16 md:mt-4 py-2 px-4 bg-blue-500 hover:bg-blue-600 rounded-full text-white text-sm"
+                disabled={submitting?true:false}
               >
                 {submitting ? "Loading" : "Submit"}
               </button>

@@ -4,6 +4,7 @@ import getUserBlog from "../../lib/blogs/getUserBlog";
 import axios from "axios";
 import getRandomUserBlogs from "../../lib/blogs/getRandomUserBlogs";
 import { useState, useRef, useCallback,useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Blog from "./blog";
 
 export default function BlogScroll({isExternal,userId=null})
@@ -13,6 +14,7 @@ export default function BlogScroll({isExternal,userId=null})
     const [loading,setLoading]=useState(false);
     const [cursorId,setCursorId]=useState(null);
     const [error, setError]=useState(false);
+    const router=useRouter();
 
     const notLogeedinUserBlogs=async(source)=>{
       try{
@@ -113,6 +115,7 @@ export default function BlogScroll({isExternal,userId=null})
                       <button
                         className="mr-2 text-red-600 text-xl border-red-600 border-2 bg-white px-5 pb-1 rounded-2xl
                       hover:bg-red-600 hover:text-white ease-in duration-300"
+                      onClick={()=>{router.push(`/blog/myBlogs/editBlog/${blog.id}`)}}
                       >
                         Edit
                       </button>
