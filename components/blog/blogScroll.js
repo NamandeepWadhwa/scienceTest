@@ -6,6 +6,7 @@ import getRandomUserBlogs from "../../lib/blogs/getRandomUserBlogs";
 import { useState, useRef, useCallback,useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Blog from "./blog";
+import deleteBlog from "../../lib/blogs/delteBlog";
 
 export default function BlogScroll({isExternal,userId=null})
   {
@@ -78,6 +79,30 @@ export default function BlogScroll({isExternal,userId=null})
       return (()=>{source.cancel(); setError(false);});
     },[])
 
+    async function handleDelte(blogId) {
+      try{
+        const res=await deleteBlog(blogId);
+        console.log(res);
+        if(res===true){
+           setData([]);
+          setCursorId(null);
+          const source = axios.CancelToken.source();
+         logedUerBlogs(source);
+         return;
+        };
+        alert("Pleas try again later");
+       
+        return;
+
+      }
+      catch(err)
+      {
+        console.error(err);
+       
+      }
+      
+    }
+
     const observer=useRef();
     const lastElement=useCallback((node)=>{
       if(loading)return;
@@ -88,7 +113,7 @@ export default function BlogScroll({isExternal,userId=null})
          if(!isExternal)logedUerBlogs(source);
          else notLogeedinUserBlogs(source);
         }
-        console.log(node);
+       
       });
       if(node) observer.current.observe(node);
     
@@ -122,6 +147,8 @@ export default function BlogScroll({isExternal,userId=null})
                       <button
                         className="mr-2 text-red-600 text-xl border-red-600 border-2 bg-white px-5 pb-1 rounded-2xl
                       hover:bg-red-600 hover:text-white ease-in duration-300"
+                      onClick={()=>{handleDelte(blog.id)}}
+
                       >
                         Delete
                       </button>
@@ -142,6 +169,9 @@ export default function BlogScroll({isExternal,userId=null})
                       Edit
                     </button>
                     <button
+                      onClick={() => {
+                        handleDelte(blog.id);
+                      }}
                       className="mr-2 text-red-600 text-xl border-red-600 border-2 bg-white px-5 pb-1 rounded-2xl
                       hover:bg-red-600 hover:text-white ease-in duration-300"
                     >

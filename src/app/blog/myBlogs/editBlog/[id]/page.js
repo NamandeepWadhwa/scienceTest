@@ -101,8 +101,8 @@ export default function Page({params}) {
       };
       const returnedValue = await updateBlog(data);
       if(returnedValue!=null){
-      console.log(returnedValue);
-      alert("Blog created successfully");
+    
+      alert("Blog edited successfully");
       setSubmitting(false);
       setTitle(returnedValue.title);
       setTags(returnedValue.tags);
