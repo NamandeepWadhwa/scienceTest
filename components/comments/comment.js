@@ -16,9 +16,9 @@ export default  function Comment({userId,content,createdAt}) {
       <div className="flex flex-wrap items-center mt-5">
         <UserAvatar userId={userId} />
       </div>
-      <div className="flex flex-warp justify-between ">
+      <div className="flex flex-warp justify-between mx-2 ">
         <span className="mt-2 mx-3">{content}</span>
-        <span>{formatDate(createdAt)}</span>
+        <span >{formatDate(createdAt)}</span>
 
       </div>
     </div>

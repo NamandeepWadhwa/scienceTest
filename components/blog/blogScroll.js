@@ -181,9 +181,9 @@ export default function BlogScroll({isExternal,userId=null})
                 </div>
               );
             })}
-          {loading && <div className="text-red-600 text-2xl mb-28">Loading</div>}
-          {error && <div className="text-red-600">There was some error, plase try again later</div>}
-          {data.length === 0 && !loading && !error && <div className="text-red-600 text-2xl ">No blogs found</div>}
+          {loading && <div className="text-red-600 text-2xl mx-2 mb-28">Loading</div>}
+          {error && <div className="text-red-600 mx-2">There was some error, plase try again later</div>}
+          {data.length === 0 && !loading && !error && <div className="text-red-600 text-2xl mx-2 ">No blogs found</div>}
         </div>
       
         

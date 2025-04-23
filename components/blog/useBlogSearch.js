@@ -4,7 +4,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 
-export default function useBlogSearch(props) {
+export default function useBlogSearch() {
   // Clear data when query changes
   useEffect(() => {
     setData([]); // This runs only when query changes
