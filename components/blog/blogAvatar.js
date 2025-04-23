@@ -34,17 +34,19 @@ export default function BlogAvatar({ userId }) {
           router.push(`/blog/user/${userId}?name=${profile.name}`);
         }}
       >
-        <div>
+        <div className="w-[50px] h-[50px] rounded-full overflow-hidden border-2 border-black">
           <Image
-            className="rounded-full border-2 border-black"
-            src={profile.imageUrl ? profile.imageUrl : "/images/search.png"}
+            className="object-cover w-full h-full"
+            src={
+              profile.imageUrl ? profile.imageUrl : "/images/userProfile.png"
+            }
             width={50}
             height={50}
             alt="author"
           />
         </div>
         <span className=" sm:mt-0 ml-3 text-4xl">
-          {profile.name ? profile.name : "Author Name"}
+          {profile.name ? profile.name : "Delted User"}
         </span>
       </div>
 

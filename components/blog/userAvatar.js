@@ -31,16 +31,19 @@ export default function UserAvatar({ userId }) {
       {loading && <p className="text-gray-500">Loading...</p>}
       {profile && (
         <>
-          <div className="mx-3">
+          <div className="mx-3 w-[50px] h-[50px] rounded-full overflow-hidden border-2 border-black">
             <Image
-            loading="lazy"
-              className="rounded-full border-2 border-black"
-              src={profile.imageUrl ? profile.imageUrl : "/images/search.png"}
+              loading="lazy"
+              className="object-cover w-full h-full"
+              src={
+                profile.imageUrl ? profile.imageUrl : "/images/userProfile.png"
+              }
               width={50}
               height={50}
               alt="author"
             />
           </div>
+
           <span className="mr-5 text-2xl">{profile.name}</span>
         </>
       )}
@@ -49,13 +52,13 @@ export default function UserAvatar({ userId }) {
           <div className="mx-3">
             <Image
               className="rounded-full border-2 border-black"
-              src="/images/search.png"
+              src="/images/userProfile.png"
               width={50}
               height={50}
               alt="author"
             />
           </div>
-          <span className="mr-5 text-2xl">Author name</span>
+          <span className="mr-5 text-2xl">Delted User</span>
         </>
       )}
     </>

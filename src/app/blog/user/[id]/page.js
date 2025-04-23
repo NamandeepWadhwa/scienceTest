@@ -19,15 +19,17 @@ export default function UserPage({ params }){
     <>
       <div className="ml-2 flex items-center mx-3 mt-3 mb-3 flex-wrap">
         <BlogAvatar userId={id} />
-        {localStorage.getItem("token") &&
+
+        {/* {localStorage.getItem("token") &&
           localStorage.getItem("Name").toLowerCase() !== name.toLowerCase() && (
             
               <div className="flex items-center ml-3 flex-warp mt-2">
                 <Image src="/images/heart.png" height={30} width={30}></Image>
-                <span className="text-blue-500">Message</span>
+                <span> Message</span>
+               
               </div>
           
-          )}
+          )} */}
       </div>
 
       <BlogScroll isExternal={true} userId={id} />

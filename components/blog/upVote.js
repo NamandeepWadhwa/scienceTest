@@ -50,7 +50,7 @@ export default function UpVotes({blogId,upVotes}){
         <div className="flex flex-warp items-center">
           <div role="button" onClick={handleChange}>
             <Image
-              src={isUpvoted ? "/images/heart.png" : "/images/search.png"}
+              src={isUpvoted ? "/images/LikedHeart.png" : "/images/heart.png"}
               height={30}
               width={30}
               alt="upvotes image"

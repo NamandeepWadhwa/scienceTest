@@ -10,7 +10,7 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
-        pathname: "/dvw5kbnsi/*",
+        pathname: "/dvw5kbnsi/**",
       },
     ],
   },
