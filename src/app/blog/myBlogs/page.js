@@ -2,6 +2,7 @@
 import { useState} from "react";
 import Link from "next/link";
 import BlogScroll from "../../../../components/blog/blogScroll";
+import UserComment from "../../../../components/comments/getUserComment"
 
 export default function MyBlogs()
 {
@@ -53,7 +54,8 @@ return (
       </div>
     </div>
 
-    <BlogScroll isExternal={false} userId={null} />
+    {blog && <BlogScroll isExternal={false} userId={null} />}
+    {comment && <UserComment />}
   </>
 );
 

@@ -1,5 +1,5 @@
 "use client";
-import { Comment } from "./comment";
+import  Comment  from "./comment";
 import{useState,useEffect, useCallback,useRef}from "react"
 import axios from "axios";
 import getBlogComments from "../../lib/comments/getBlogComments";
@@ -25,6 +25,7 @@ export default function BlogComment({ blogId})
       }
       const source=axios.CancelToken.source();
       const comment=await addComment(content,blogId,localStorage.getItem("token"),source);
+      console.log(comment);
      
       if(comment==null)
       {

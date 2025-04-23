@@ -1,7 +1,7 @@
 "use client";
 import UserAvatar from "../blog/userAvatar";
 
-export function Comment({userId,content,createdAt}) {
+export default  function Comment({userId,content,createdAt}) {
     function formatDate(dateString) {
       const date = new Date(dateString);
       return date.toLocaleDateString("en-GB", {
