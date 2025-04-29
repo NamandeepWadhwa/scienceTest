@@ -74,13 +74,21 @@ export default function SideBar() {
                     Profile
                   </a>
                 </li>
+                <li>
+                  <a href="/chats" className="hover:text-gray-600 text-lg">
+                    Profile
+                  </a>
+                </li>
               </>
             )}
             <li>
               {!token && (
                 <button
                   className="text-lg hover:text-gray-600 text-reguarlText"
-                  onClick={() => {router.push("/signin"); setOpen(false)}}
+                  onClick={() => {
+                    router.push("/signin");
+                    setOpen(false);
+                  }}
                 >
                   Sign In
                 </button>

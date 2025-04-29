@@ -50,6 +50,11 @@ export default function SideBarMd() {
                   Profile
                 </a>
               </li>
+              <li>
+                <a href="/chats" className="hover:text-gray-600">
+                  Profile
+                </a>
+              </li>
             </>
           )}
         </ul>
