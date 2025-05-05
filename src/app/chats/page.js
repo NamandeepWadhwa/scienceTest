@@ -1,8 +1,9 @@
-// ExampleComponent.js
+"use client"
+"use strict"
 import { useEffect } from "react";
 import { useSocket } from "../../../components/sockeioContext";
 
-export default function ExampleComponent() {
+export default function Page() {
   const socket = useSocket();
 
   useEffect(() => {

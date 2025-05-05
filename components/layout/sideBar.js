@@ -4,6 +4,7 @@ import { useState,useEffect } from "react";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
+import Link from "next/link";
 import { tokenState } from "../../lib/stateManagement/tokenState";
 
 export default function SideBar() {
@@ -48,36 +49,44 @@ export default function SideBar() {
             open ? "flex flex-col" : "hidden"
           } `}
         >
-          <ul className="space-y-5">
+          <ul
+            className="space-y-5"
+            onClick={(e) => {
+              const isLink = e.target.closest("a"); // Detect if a <Link> (which renders as <a>) was clicked
+              if (isLink) {
+                setOpen(false); // Do something, like close the navbar
+              }
+            }}
+          >
             <li>
-              <a href="#" className="hover:text-gray-600 text-lg">
+              <Link href="/" className="hover:text-gray-600 text-lg">
                 Home
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/blog" className="hover:text-gray-600 text-lg">
+              <Link href="/blog" className="hover:text-gray-600 text-lg">
                 Blogs
-              </a>
+              </Link>
             </li>
             {token && (
               <>
                 <li>
-                  <a
+                  <Link
                     href="/blog/myBlogs"
                     className="hover:text-gray-600 text-lg"
                   >
                     My Content
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/profile" className="hover:text-gray-600 text-lg">
+                  <Link href="/profile" className="hover:text-gray-600 text-lg">
                     Profile
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/chats" className="hover:text-gray-600 text-lg">
-                    Profile
-                  </a>
+                  <Link href="/chats" className="hover:text-gray-600 text-lg">
+                    Chats
+                  </Link>
                 </li>
               </>
             )}
@@ -105,7 +114,7 @@ export default function SideBar() {
           </ul>
         </div>
       </div>
-      ;
+      
     </>
   );
 

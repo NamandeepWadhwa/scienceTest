@@ -4,6 +4,7 @@ import { signOut } from "next-auth/react"; // Import signOut from next-auth
 import { useEffect } from "react";
 import { useAtom } from "jotai";
 import { tokenState } from "../../lib/stateManagement/tokenState";
+import Link from "next/link";
 
 export default function SideBarMd() {
   const [token,setToken]=useAtom(tokenState);
@@ -27,33 +28,33 @@ export default function SideBarMd() {
       <div className="hidden md:flex justify-between text-reguarlText m-5 text-lg">
         <ul className="flex space-x-8">
           <li>
-            <a href="/" className="hover:text-gray-600">
+            <Link href="/" className="hover:text-gray-600">
               Home
-            </a>
+            </Link>
           </li>
 
           <li>
-            <a href="/blog" className="hover:text-gray-600">
+            <Link href="/blog" className="hover:text-gray-600">
               Blogs
-            </a>
+            </Link>
           </li>
           {token && (
             <>
               {" "}
               <li>
-                <a href="/blog/myBlogs" className="hover:text-gray-600">
+                <Link href="/blog/myBlogs" className="hover:text-gray-600">
                   My Content
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/profile" className="hover:text-gray-600">
+                <Link href="/profile" className="hover:text-gray-600">
                   Profile
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/chats" className="hover:text-gray-600">
-                  Profile
-                </a>
+                <Link href="/chats" className="hover:text-gray-600">
+                  Chats
+                </Link>
               </li>
             </>
           )}

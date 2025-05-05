@@ -1,7 +1,6 @@
 'use client'
 import "./globals.css";
-import SideBar from "../../components/layout/sideBar";
-import SideBarMd from "../../components/layout/sideBarMD";
+import FinalLayout from "../../components/layout/integreatedLayout"
 import { SessionProvider } from "next-auth/react";
 import RouteGuard from "../../components/RouteGuard";
 import { SocketProvider } from "../../components/sockeioContext"
@@ -23,10 +22,7 @@ export default function RootLayout({ children }) {
         <RouteGuard>
           <SessionProvider>
             <SocketProvider token={token}>
-              <div className="sticky top-0 w-full flex justify-center bg-navbar z-50 h-14">
-                <SideBarMd />
-                <SideBar />
-              </div>
+              <FinalLayout/>
               {/* Main content should take up remaining space */}
               <div className=" h-svh bg-white ">{children}</div>
               {/* Footer stays at the bottom */}
