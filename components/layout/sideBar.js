@@ -7,7 +7,7 @@ import { useAtom } from "jotai";
 import Link from "next/link";
 import { tokenState } from "../../lib/stateManagement/tokenState";
 
-export default function SideBar() {
+export default function SideBar({messages}) {
   const router=useRouter();
     const [token,setToken]=useAtom(tokenState);
     useEffect(()=>{
@@ -84,9 +84,17 @@ export default function SideBar() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/chats" className="hover:text-gray-600 text-lg">
-                    Chats
-                  </Link>
+                  <div className="flex">
+                    <Link href="/chats" className="hover:text-gray-600 text-lg">
+                      Chats
+                    </Link>
+                    <Link
+                      href="/chats"
+                      className="bg-red-600 border-red-600 text-white border-2 rounded-full w-6 h-6 flex items-center justify-center text-sm"
+                    >
+                      {messages}
+                    </Link>
+                  </div>
                 </li>
               </>
             )}
@@ -114,7 +122,6 @@ export default function SideBar() {
           </ul>
         </div>
       </div>
-      
     </>
   );
 

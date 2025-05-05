@@ -6,7 +6,7 @@ import { useAtom } from "jotai";
 import { tokenState } from "../../lib/stateManagement/tokenState";
 import Link from "next/link";
 
-export default function SideBarMd() {
+export default function SideBarMd({messages}) {
   const [token,setToken]=useAtom(tokenState);
   useEffect(()=>{
   setToken(localStorage.getItem('token'));
@@ -52,9 +52,17 @@ export default function SideBarMd() {
                 </Link>
               </li>
               <li>
-                <Link href="/chats" className="hover:text-gray-600">
-                  Chats
-                </Link>
+                <div className="flex flex-wrap">
+                  <Link href="/chats" className="hover:text-gray-600">
+                    Chats
+                  </Link>
+                  <Link
+                    href="/chats"
+                    className="bg-red-600 border-red-600 text-white border-2 rounded-full w-6 h-6 flex items-center justify-center text-sm"
+                  >
+                    {messages}
+                  </Link>
+                </div>
               </li>
             </>
           )}
