@@ -31,32 +31,29 @@ export default function Sign() {
     e.preventDefault();
 
 
-    if (email === "estUser@xyz.com" || password === "TestPassword@123")
-      {
-     const data = await getTestUser(email, password);
- 
+    if (
+      (email === "testUser@xyz.com" || email === "testUser2@xyz.com") &&
+      password === "TestPassword@123"
+    ) {
+      const data = await getTestUser(email, password);
+
       if (data) {
         alert("You are now logged in");
         localStorage.setItem("token", data.token);
         setToken(data.token);
-         router.push("/profile");
-      }
-      else{
+        router.push("/profile");
+      } else {
         alert("Error occured");
       }
-      
-     
-      
+    } else {
+      const data = await getUser(email, password);
+      if (data) {
+        alert("You are now logged in");
+        setToken(data.token);
+        localStorage.setItem("token", data.token);
+        router.push("/profile");
+      }
     }
-    else{
-    const data = await getUser(email, password);
-    if (data) {
-      alert("You are now logged in");
-      setToken(data.token);
-      localStorage.setItem("token", data.token);
-      router.push("/profile");
-    }
-  }
   };
 
   return (
