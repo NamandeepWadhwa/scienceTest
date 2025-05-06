@@ -5,17 +5,13 @@ import { SessionProvider } from "next-auth/react";
 import RouteGuard from "../../components/RouteGuard";
 import { SocketProvider } from "../../components/sockeioContext"
 import { useEffect, useState } from "react";
+import { tokenState } from "../../lib/stateManagement/tokenState";
+import { useAtom } from "jotai";
 
 
 export default function RootLayout({ children }) {
-  const [token,setToken]=useState(null);
-  useEffect(()=>{
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-
-  },[])
+  const [token,setToken]=useAtom(tokenState);
+ 
   return (
     <html lang="en">
       <body className="min-h-screen">

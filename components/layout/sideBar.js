@@ -6,8 +6,11 @@ import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import Link from "next/link";
 import { tokenState } from "../../lib/stateManagement/tokenState";
+import { useSocket } from "../sockeioContext";
+
 
 export default function SideBar({messages}) {
+  const socket=useSocket();
   const router=useRouter();
     const [token,setToken]=useAtom(tokenState);
     useEffect(()=>{
@@ -16,6 +19,7 @@ export default function SideBar({messages}) {
     const handleSignOut = async () => {
       localStorage.removeItem("token");
       localStorage.removeItem("Name");
+      if(socket)socket.disconnect();
 
       await signOut({ callbackUrl: "/signin" });
       setOpen(false); // Redirect after sign out
@@ -90,7 +94,11 @@ export default function SideBar({messages}) {
                     </Link>
                     <Link
                       href="/chats"
-                      className="bg-red-600 border-red-600 text-white border-2 rounded-full w-6 h-6 flex items-center justify-center text-sm"
+                      className={
+                        messages === 0
+                          ? "hidden"
+                          : "bg-red-600 border-red-600 text-white border-2 rounded-full w-6 h-6 flex items-center justify-center text-sm"
+                      }
                     >
                       {messages}
                     </Link>
