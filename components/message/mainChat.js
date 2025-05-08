@@ -12,8 +12,9 @@ export default function MainChat({otherUserId})
   const[cursorId,setCursorId]=useState(null);
   const[loading,setLoading]=useState(false);
   const [hasMore,setHasMore]=useState(null);
-  const[chatExist, setChatExist]=useState(true);
+  const[chatExist, setChatExist]=useState(false);
   const messageRef=useRef(null);
+  const [chatId,seetChatId]=useState(null);
   
  
   const handleNewMessage=(newMesage)=>
@@ -74,30 +75,35 @@ const handleOldMessage = () => {
   useEffect(() => {
     const source = axios.CancelToken.source();
 
-    // const fetchChat = async () => {
-    //   try {
-    //     const res = await doesChatExist(otherUserId, source);
+    const fetchChat = async () => {
+      try {
+        const res = await doesChatExist(otherUserId, source);
        
-    //     if(res==null){setChatExist(true);return;}
-    //     if (res.isExist === false) {
-    //       setMessages([]);
-    //       setChatExist(false);
-    //     } else {
-    //       //getMessage(); // Call this only if the chat exists
-    //     }
-    //   } catch (err) {
-    //    if (!axios.isCancel(err)) {
-    //      console.error("Error checking chat existence", err);
-    //    }
-    //   }
-    // };
+      
+        if (res.isExist === false) {
+          setMessages([]);
+          setChatExist(false);
+          handleOldMessage();
+        } else {
+          setChatExist(true);
+          seetChatId(res.chatId);
+          handleOldMessage();
+          
+          
+        }
+      } catch (err) {
+       if (!axios.isCancel(err)) {
+         console.error("Error checking chat existence", err);
+       }
+      }
+    };
 
-    // fetchChat();
+    fetchChat();
 
-    // return () => {
-    //   source.cancel(); // Properly clean up the request
-    // };
-    handleOldMessage();
+    return () => {
+      source.cancel(); // Properly clean up the request
+    };
+    
 
 
   }, [otherUserId]);
