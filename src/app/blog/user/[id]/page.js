@@ -5,8 +5,11 @@ import BlogAvatar from "../../../../../components/blog/blogAvatar";
 import BlogScroll from "../../../../../components/blog/blogScroll";
 import Image from "next/image";
 import { canSendMessage } from "../../../../../lib/messages/canSendMeesage";
+import { useRouter } from "next/navigation";
+ 
 
 export default function UserPage({ params }){
+  const router=useRouter();
    
   const id = params.id;
   const [name,setName]=useState("");
@@ -42,15 +45,18 @@ isAllwed();
       <div className="ml-2 flex items-center mx-3 mt-3 mb-3 flex-wrap">
         <BlogAvatar userId={id} />
 
-         {localStorage.getItem("token") && messageAllowed && localStorage.getItem("Name") && (
-            
-              <div className="flex items-center ml-3 flex-warp mt-2">
+         
+            {messageAllowed && localStorage.getItem("Name") &&
+              <div className="flex items-center ml-3 flex-warp mt-2" role="button" onClick={()=>{
+                router.push(`/blog/message/${id}`);
+              }}>
                 <Image src="/images/message.png" height={30} width={30}></Image>
                 <span> Message</span>
                
               </div>
+}
           
-          )} 
+          
       </div>
 
       <BlogScroll isExternal={true} userId={id} />
