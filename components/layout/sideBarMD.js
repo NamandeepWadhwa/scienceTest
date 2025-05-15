@@ -6,9 +6,11 @@ import { useAtom } from "jotai";
 import { tokenState } from "../../lib/stateManagement/tokenState";
 import Link from "next/link";
 import { useSocket } from "../sockeioContext";
+import { useUnreadMessage } from "../unreadMessagContext";
 
 
-export default function SideBarMd({messages}) {
+export default function SideBarMd() {
+  const {unreadMessages, setUnredMessages} = useUnreadMessage();
   const socket=useSocket();
   const [token,setToken]=useAtom(tokenState);
   useEffect(()=>{
@@ -63,12 +65,12 @@ export default function SideBarMd({messages}) {
                   <Link
                     href="/chats"
                     className={
-                      messages === 0
+                      unreadMessages === 0
                         ? "hidden"
                         : "bg-red-600 border-red-600 text-white border-2 rounded-full w-6 h-6 flex items-center justify-center text-sm"
                     }
                   >
-                    {messages}
+                    {unreadMessages}
                   </Link>
                 </div>
               </li>

@@ -18,12 +18,31 @@ export default function MainChat({otherUserId})
   const [content,setContent]=useState("");
   const [chatId,seetChatId]=useState(null);
   
-  
+  const scrollToBottom = () => {
+    if (messageRef.current) {
+      messageRef.current.scrollTop = messageRef.current.scrollHeight;
+    }
+  };
  
-  const handleNewMessage=useCallback((newMesage)=>
-  {
-      setMessages((preMessage)=>{return [...preMessage,newMesage]})
-  },[]);
+  const handleNewMessage = useCallback((newMessage) => {
+    const container = messageRef.current;
+    let shouldScroll = false;
+
+    if (container) {
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
+      shouldScroll = distanceFromBottom < 100; // or another threshold
+    }
+
+    setMessages((prevMessages) => {
+      const updatedMessages = [...prevMessages, newMessage];
+      // After state update + DOM render, do the scroll
+      requestAnimationFrame(() => {
+        if (shouldScroll) scrollToBottom();
+      });
+      return updatedMessages;
+    });
+  }, []);
 const handleScroll = (e) => {
   const top = e.target.scrollTop;
   if (top === 0 && hasMore && !loading) {
@@ -83,11 +102,12 @@ const handleSendMessage=async()=>
   if(!chatId)
   {
     const data=await createChat(otherUserId,content);
+    console.log(data);
     
     if(data===null){return;
     
     }
-    const chatId = data.chatId;
+    const chatId = data.id;
     seetChatId(chatId);
      const message = await sendMessage(chatId, content);
      
@@ -122,9 +142,9 @@ useEffect(() => {
 
   useEffect(()=>{
     if(!socket)return;
-    socket.on("NEW_MESSAGE_RECEIVED", handleNewMessage);
+    socket.on("NEW_MESSAGE", handleNewMessage);
     return (()=>{
-      socket.off("NEW_MESSAGE_RECEIVED", handleNewMessage);
+      socket.off("NEW_MESSAGE", handleNewMessage);
     })
     
   },[socket,handleNewMessage]);

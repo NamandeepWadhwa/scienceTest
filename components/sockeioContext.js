@@ -1,18 +1,21 @@
 // SocketContext.js
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import { tokenState } from "../lib/stateManagement/tokenState";
+import { useAtom } from "jotai";
 
 const SocketContext = createContext(null);
 
-export const SocketProvider = ({ children, token }) => {
+export const SocketProvider = ({ children }) => {
+  const [tokenValue] = useAtom(tokenState);
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    if (!token) return;
+    if (!tokenValue) return;
 
     const newSocket = io("http://localhost:8080", {
       auth: {
-        token,
+        tokenValue,
       },
     });
 
@@ -29,7 +32,7 @@ export const SocketProvider = ({ children, token }) => {
     return () => {
       newSocket.disconnect();
     };
-  }, [token]);
+  }, [tokenValue]);
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
