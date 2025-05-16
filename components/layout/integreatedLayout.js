@@ -31,7 +31,7 @@ export default function FinalLayout() {
   }
 
   useEffect(() => {
-    console.log("Socket is", socket);
+
    
 
     if (token) {

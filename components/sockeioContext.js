@@ -12,10 +12,11 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (!tokenValue) return;
+    
 
     const newSocket = io("http://localhost:8080", {
       auth: {
-        tokenValue,
+        token: tokenValue,
       },
     });
 
