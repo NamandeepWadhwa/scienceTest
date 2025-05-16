@@ -10,6 +10,7 @@ export const authOptions = {
       clientSecret: process.env.NEXT_PUBLIC_CLIENT_SECRET,
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async signIn({ account, profile }) {
       if (account.provider === "google") {
@@ -31,11 +32,11 @@ export const authOptions = {
       return false; // If provider is not Google, sign-in fails
     },
     async session({ session, token }) {
-  if (session.user) {
-    session.user.token = token?.token || null; // Safeguard against undefined
-  }
-  return session;
-},
+      if (session.user) {
+        session.user.token = token?.token || null; // Safeguard against undefined
+      }
+      return session;
+    },
     async jwt({ token, account }) {
       if (account) {
         token.token = account.token; // Set token from account
