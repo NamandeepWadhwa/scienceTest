@@ -1,7 +1,6 @@
 'use client';
 import Image from "next/image";
 import { useState,useEffect } from "react";
-import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import Link from "next/link";
@@ -21,9 +20,12 @@ export default function SideBar() {
     const handleSignOut = async () => {
       localStorage.removeItem("token");
       localStorage.removeItem("Name");
+      setToken(null); // Clear the token state
+     
       if(socket)socket.disconnect();
+      router.push("/signin");
 
-      await signOut({ callbackUrl: "/signin" });
+     
       setOpen(false); // Redirect after sign out
     };
 

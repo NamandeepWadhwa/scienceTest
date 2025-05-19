@@ -1,9 +1,9 @@
 "use client"; // Ensure this is a client component
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
+
 import getUser from "../../lib/user/getUser";
-import { signIn, useSession } from "next-auth/react";
+
 import { useRouter } from "next/navigation";
 import getTestUser from "../../lib/user/getTestUser";
 import { useAtom } from "jotai";
@@ -15,16 +15,11 @@ export default function Sign() {
   const router=useRouter();
   const [email, setEmail] = useState("testUser@xyz.com");
   const [password, setPassword] = useState("TestPassword@123");
-  const { data: session } = useSession(); // Move useSession here
+
 
   useEffect(() => {
     if(token)router.push("/profile");
-     if (session?.user?.token  &&(session.user.token !== localStorage.getItem("token"))) 
-    { 
-        setToken(session.user.token);
-       localStorage.setItem("token", session.user.token);
-       router.push("/profile");
-     }
+  
   }, []);
 
   const handleSubmit = async (e) => {
@@ -60,26 +55,9 @@ export default function Sign() {
     <div className="flex flex-col items-center justify-center h-full">
       <div className="text-2xl font-bold mb-4">Sign In</div>
 
-      {/* Sign in with Google Button */}
-      <button
-        onClick={() => {
-          console.log("Signing in with callbackUrl /profile");
-          signIn("google", { callbackUrl: "/profile" });
-        }}
-      >
-        <div className="flex items-center hover:text-blue-600">
-          <Image
-            src="/images/googleLogo.png"
-            width={40}
-            height={40}
-            alt="Google"
-            className="mr-2"
-          />
-          <span>Sign in with Google</span>
-        </div>
-      </button>
+      
 
-      <div className="mb-2">OR</div>
+     
 
       <form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
         <input

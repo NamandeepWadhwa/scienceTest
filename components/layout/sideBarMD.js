@@ -1,6 +1,5 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { signOut } from "next-auth/react"; // Import signOut from next-auth
 import { useEffect } from "react";
 import { useAtom } from "jotai";
 import { tokenState } from "../../lib/stateManagement/tokenState";
@@ -22,9 +21,10 @@ export default function SideBarMd() {
   const handleSignOut = async () => {
     localStorage.removeItem("token");
     localStorage.removeItem("Name");
-   socket.disconnect();
-  
-    await signOut({ callbackUrl: "/signin" }); // Redirect after sign out
+    setToken(null); // Clear the token state
+   if(socket)socket.disconnect();
+   router.push("/signin");
+ 
   };
 
 
@@ -44,7 +44,7 @@ export default function SideBarMd() {
               Blogs
             </Link>
           </li>
-          {token && (
+          {localStorage.getItem("token") && (
             <>
               {" "}
               <li>

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { userEmail,userPassword } from "../../lib/user/userState";
 import { useAtom } from "jotai";
 import sendOtp from'../../lib/otp/sendOtp'
+import verifyUser from "../../lib/user/verifyUser";
 export default function SignUp() {
   const router=useRouter();
   const [email,setEmail]=useAtom(userEmail)
@@ -20,6 +21,11 @@ export default function SignUp() {
       alert("Passwords do not match");
       return;
     }
+    const data = await verifyUser(email);
+    if(data===null){return;
+      
+    }
+    if(data===true){alert("User already exists");return;}
     await sendOtp(email);
 
   router.push(`/otp`)
@@ -60,7 +66,7 @@ export default function SignUp() {
 
     </form>
     <div className="mt-2">
-   <span> Already have an account? <Link href="/sign" className="text-blue-600">Sign In</Link></span>
+   <span> Already have an account? <Link href="/signin" className="text-blue-600">Sign In</Link></span>
     </div>
 
   </div>

@@ -1,5 +1,7 @@
 
-"use server";
+
+
+export const dynamic = "force-dynamic";
 import  getBlogInfo from "../../../../lib/blogs/getBlogInfo";
 import BlogAvatar from "../../../../components/blog/blogAvatar";
 import BlogComment from "../../../../components/comments/getBlogComments";
@@ -14,6 +16,7 @@ export default async function Page({params}) {
     });
   }
 const {id}=params;
+
 try{
   const blog=await getBlogInfo(id);
   return (
@@ -24,7 +27,7 @@ try{
           <span className="text-3xl">{blog.title}</span>
           <div className="flex flex-wrap items-center mt-3 md:mt-0">
             <span className="mr-3">{formatDate(blog.createdAt)}</span>
-<UpVotes blogId={blog.id} upVotes={blog.upvotes}/>
+<UpVotes blogId={blog.id} />
           </div>
         </div>
         <div

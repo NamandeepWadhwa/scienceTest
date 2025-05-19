@@ -11,6 +11,7 @@ export const UnreadMessageProvider = ({ children }) => {
   const [token] = useAtom(tokenState);
 
   async function getMessages() {
+    if (!token) return;
     try {
       const messages = await getUnredMessages();
       setUnredMessages(messages);

@@ -9,19 +9,20 @@ const SocketContext = createContext(null);
 export const SocketProvider = ({ children }) => {
   const [tokenValue] = useAtom(tokenState);
   const [socket, setSocket] = useState(null);
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   useEffect(() => {
     if (!tokenValue) return;
     
 
-    const newSocket = io("http://localhost:8080", {
+    const newSocket = io(backendUrl, {
       auth: {
         token: tokenValue,
       },
     });
 
     newSocket.on("connect", () => {
-      console.log("Socket connected:", newSocket.id);
+      
     });
 
     newSocket.on("connect_error", (err) => {

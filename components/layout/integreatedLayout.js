@@ -19,7 +19,9 @@ export default function FinalLayout() {
   
 
   async function getMessages() {
+    if(!token)return;
     try {
+     
       const messages = await getUnredMessages();
       setUnredMessages(messages);
 
@@ -32,7 +34,7 @@ export default function FinalLayout() {
 
   useEffect(() => {
 
-   
+   console.log(token);
 
     if (token) {
       getMessages();

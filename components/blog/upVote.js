@@ -3,9 +3,23 @@ import Image from 'next/image';
 import{useState,useEffect} from 'react'
 import checkUpvotes from '../../lib/blogs/checkUpvotes';
 import changeUpvotes from '../../lib/blogs/changeUpvotes';
-export default function UpVotes({blogId,upVotes}){
+import getBlogInfo from '../../lib/blogs/getBlogInfo';
+export default function UpVotes({blogId}){
+  const [upVotes,setUpVotes]=useState(0);
   const [isUpvoted,setUpVoted]=useState(false);
-  const [totalNumber,setTotalNumber]=useState(upVotes);
+  const [totalNumber,setTotalNumber]=useState(0);
+  useEffect(()=>{
+    async function getBlogData() {
+      try {
+        const data = await getBlogInfo(blogId);
+        setUpVotes(data.upvotes);
+        setTotalNumber(data.upvotes);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    getBlogData();
+  },[]);
   async function checkUpvote(){
     try{
       const upVoted=await checkUpvotes(blogId,localStorage.getItem("token"));

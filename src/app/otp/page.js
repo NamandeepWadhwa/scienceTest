@@ -1,28 +1,40 @@
 'use client'
 import { useState } from "react"
 import sendOtp from "../../../lib/otp/sendOtp";
-import { useSearchParams } from "next/navigation";
+
+
 import verifyOtp from "../../../lib/otp/verifyOpt";
 import createUser from "../../../lib/user/createUser";
 import { userEmail,userPassword } from "../../../lib/user/userState";
+import { useRouter } from "next/navigation";
+import { tokenState } from "../../../lib/stateManagement/tokenState";
 import { useAtom } from "jotai";
 export default function Home(){
   const[email,setEmail]=useAtom(userEmail);
+  const [token,setToken]=useAtom(tokenState);
   const[password,setPassword]=useAtom(userPassword);
   const [opt, setOpt]=useState("");
   const [disable,setdisable]=useState(false);
+  const router = useRouter();
 
   async function handleSubmit(){
+    
     if (!opt) {
       alert("enter the otp");
       return;
     }
-
+    
+    
     const verified = await verifyOtp(email, opt);
     console.log(verified);
     if(verified){
       const data = await createUser(email, password);
-      if(data){alert("user created");localStorage.token=data.token;}
+      if(data){alert("user created");localStorage.token=data.token;
+      setToken(data.token);
+      router.push("/profile");
+      
+      }
+
     }
       
   }
