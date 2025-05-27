@@ -4,9 +4,11 @@ import uploadImage from "../../../lib/uploadImage/uploadImage";
 import createProfile from "../../../lib/profile/createProfile";
 import updateProfile from "../../../lib/profile/updateProfile";
 import getProfile from "../../../lib/profile/getProfile";
+import { useRouter } from "next/navigation";
 
 
 export default function UserProfile() {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(
@@ -76,10 +78,12 @@ export default function UserProfile() {
     await createProfile(localStorage.getItem("token"),name,imageUrl);
     setProfileCreated(true);
     await fetchProfile();
+    router.push("/");
     return;
    }
    else{
     await updateProfile(localStorage.getItem("token"),name,imageUrl);
+    router.push("/");
     await fetchProfile();
     
     return;

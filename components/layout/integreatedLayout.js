@@ -34,7 +34,7 @@ export default function FinalLayout() {
 
   useEffect(() => {
 
-   console.log(token);
+
 
     if (token) {
       getMessages();

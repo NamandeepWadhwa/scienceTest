@@ -3,10 +3,11 @@
 
 import { useState, useRef, useEffect, use} from "react";
 import "react-quill/dist/quill.snow.css";
-import getBlogInfo from "../../../../../lib/blogs/getBlogInfo";
+import { useRouter } from "next/navigation";
 import DOMPurify from "dompurify";
 import createNewBlog from "../../../../../lib/blogs/createNewBlog";
 export default function Page() {
+  const router=useRouter();
   const [tags, setTags] = useState([]);
   const [currentTag, setCurrentTag] = useState("");
   const [title, setTitle] = useState("");
@@ -93,13 +94,14 @@ const ReactQuill = typeof window === "object" ? require("react-quill") : () => f
         tags: tags,
       };
       const returnedValue = await createNewBlog(data);
-      console.log(returnedValue);
+
       alert("Blog created successfully");
       setSubmitting(false);
       setTags([]);
       setTitle("");
       setDescription("");
       setCurrentTag("");
+      router.push("/blog");
       return;
     } catch (err) {
       alert(err.message);
@@ -137,10 +139,10 @@ const ReactQuill = typeof window === "object" ? require("react-quill") : () => f
         <div className="bg-white p-4">
           <form onSubmit={handleSubmit}>
             <div>
-              <label className="block mt-2">Title (20 to 70 characters)</label>
+              <label className="block mt-2">Title </label>
               <input
                 className="w-full px-5 py-2 rounded border-2 border-black"
-                placeholder="Title"
+                placeholder="20-70 characters"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               ></input>
@@ -181,15 +183,14 @@ const ReactQuill = typeof window === "object" ? require("react-quill") : () => f
               <label className="block mt-2">
                 Description (2,500 to 10,000 characters)
               </label>
-             
-                <ReactQuill
-                  theme="snow"
-                  value={description}
-                  onChange={setDescription}
-                  className="h-48"
-                  ref={quillRef}
-                />
-              
+
+              <ReactQuill
+                theme="snow"
+                value={description}
+                onChange={setDescription}
+                className="h-48"
+                ref={quillRef}
+              />
             </div>
             <div className="mt-10">
               <button

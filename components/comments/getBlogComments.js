@@ -129,7 +129,7 @@ try {
         <div key={index} ref={lastElement}>
           <Comment
             userId={d.userId}
-            content={d.title}
+            content={d.content}
             createdAt={d.createdAt}
           />
         </div>

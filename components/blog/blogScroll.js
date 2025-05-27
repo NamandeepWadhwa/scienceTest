@@ -84,7 +84,9 @@ export default function BlogScroll({isExternal,userId=null})
         const res=await deleteBlog(blogId);
         console.log(res);
         if(res===true){
-           setData([]);
+           setData((prevData) => {
+            return prevData.filter((blog) => blog.id !== blogId);
+          });
           setCursorId(null);
           const source = axios.CancelToken.source();
          logedUerBlogs(source);
