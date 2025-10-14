@@ -22,7 +22,7 @@ export default async function Home() {
     console.error("Failed to fetch data:", err);
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p className="text-xl font-bold text-red-600">Failed to load data.</p>
+        <p className="text-xl font-bold text-red-600">As of now the NASA API's are suspended due to budget cut.</p>
       </div>
     );
   }
